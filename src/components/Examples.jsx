@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { EXAMPLES } from '../data.js';
 import Section from './Section.jsx';
 import Taps from './Tabs.jsx';
+import TabButton from './TabButton.jsx';
 
 export default function Examples() {
   const [selectedTopic, setSelectedTopic] = useState();
@@ -31,7 +32,34 @@ export default function Examples() {
   }
   return (
         <Section title="Examples" id="examples">
-          <Taps onSelect={handleSelect} selectedTopic={selectedTopic}>
+          <Taps buttons={ // 슬롯 속성으로 버튼을 전달한다. 흔한 패턴이라고 함
+            <>
+              <TabButton
+                isSelected={selectedTopic === 'components'}
+                onClick={() => handleSelect('components')}
+              >
+                Components
+              </TabButton>
+              <TabButton
+                isSelected={selectedTopic === 'jsx'}
+                onClick={() => handleSelect('jsx')}
+              >
+                JSX
+              </TabButton>
+              <TabButton
+                isSelected={selectedTopic === 'props'}
+                onClick={() => handleSelect('props')}
+              >
+                Props
+              </TabButton>
+              <TabButton
+                isSelected={selectedTopic === 'state'}
+                onClick={() => handleSelect('state')}
+              >
+                State
+              </TabButton>
+            </>
+          }>
             {tabContent}
         </Taps>
         </Section>
