@@ -32,33 +32,35 @@ export default function Examples() {
   }
   return (
         <Section title="Examples" id="examples">
-          <Taps buttons={ // 슬롯 속성으로 버튼을 전달한다. 흔한 패턴이라고 함
-            <>
-              <TabButton
-                isSelected={selectedTopic === 'components'}
-                onClick={() => handleSelect('components')}
-              >
-                Components
-              </TabButton>
-              <TabButton
-                isSelected={selectedTopic === 'jsx'}
-                onClick={() => handleSelect('jsx')}
-              >
-                JSX
-              </TabButton>
-              <TabButton
-                isSelected={selectedTopic === 'props'}
-                onClick={() => handleSelect('props')}
-              >
-                Props
-              </TabButton>
-              <TabButton
-                isSelected={selectedTopic === 'state'}
-                onClick={() => handleSelect('state')}
-              >
-                State
-              </TabButton>
-            </>
+          <Taps 
+            ButtonsContainer="menu" // ul, div, section, 컴포넌트 Section도 가능하다.
+            buttons={ // 슬롯 속성으로 버튼을 전달한다. 흔한 패턴이라고 함
+              <>
+                <TabButton
+                  isSelected={selectedTopic === 'components'}
+                  onClick={() => handleSelect('components')}
+                >
+                  Components
+                </TabButton>
+                <TabButton
+                  isSelected={selectedTopic === 'jsx'}
+                  onClick={() => handleSelect('jsx')}
+                >
+                  JSX
+                </TabButton>
+                <TabButton
+                  isSelected={selectedTopic === 'props'}
+                  onClick={() => handleSelect('props')}
+                >
+                  Props
+                </TabButton>
+                <TabButton
+                  isSelected={selectedTopic === 'state'}
+                  onClick={() => handleSelect('state')}
+                >
+                  State
+                </TabButton>
+              </>
           }>
             {tabContent}
         </Taps>
