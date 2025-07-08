@@ -20,19 +20,25 @@ function deriveActivePlayer(gameTurns) {
   return currnetPlayer;
 }
 
-const initialGameBoaurd = [
+const initialGameBoard = [
   [null,null,null],
   [null,null,null],
   [null,null,null]
 ]
 
 function App() {
-  // state 끌어올리기
-  /** GamaBoard Log 둘 모두 현재 턴의 정보가 필요하다.
+  /** state 끌어올리기:
+   * GamaBoard Log 둘 모두 현재 턴의 정보가 필요하다.
    * 경기를 기록하는 GameBoard의 state 또한 끌어올려 App 컴포넌트에서 관리한다.
   */
   const [gameTurns, setGameturns] = useState([])
-  let gameBoard = initialGameBoaurd; 
+
+  /** initialGameBoard 를 항상 깊은 복사를 해야하는 이유:
+   * 모든 데이터(로그, 게임보드, 턴, 승리자 등)가 gameTurns state 에서 파생되는 점 때문이다. 
+   * 이 점을 활용하여 gameTurns 만 초기화하면 게임보드와 승리자도 초기화할 수 있도록 설계되었다. 
+   * 이 때 리액트가 초기화하지 못하는 initialGameBoard를 직접 수정한 상태라면 gameTurns를 초기화해도 게임이 초기화되지 않는다.
+  */
+  let gameBoard = [...initialGameBoard].map(row => [...row]); 
   for (const turn of gameTurns) { // 제어하는 상태의 수는 최소화하되 각 상태에서 가능한 많은 정보와 값을 파생시키는 것이 리액트의 의도
       const {square, player} = turn;
       const {row, col} = square;
@@ -79,7 +85,7 @@ function App() {
     setGameturns([]);
     // gameBoard를 초기화하는 것은 의미가 없다. 
     // gameBoard는 gameTurns에서 파생되는 값이기 때문에, gameTurns가 초기화되면 자동으로 초기화된다.
-    // gameBoard = initialGameBoaurd; 
+    // gameBoard = initialGameBoard; 
     // activePlayer = "X"; // 이 또한 의미가 없다.
   }
 
