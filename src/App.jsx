@@ -27,16 +27,26 @@ const initialGameBoard = [
 ]
 
 function App() {
+  /** playerName을 끌어오지 못하는 대안: 최근 플레이어 이름을 저장하는 state를 만듭니다.*/
+  const [playerNames, setPlayerNames] = useState({
+    X: "Player 1",
+    O: "Player 2"
+  });
+
   /** state 끌어올리기:
+   * 
    * GamaBoard Log 둘 모두 현재 턴의 정보가 필요하다.
    * 경기를 기록하는 GameBoard의 state 또한 끌어올려 App 컴포넌트에서 관리한다.
   */
   const [gameTurns, setGameturns] = useState([])
 
-  /** initialGameBoard 를 항상 깊은 복사를 해야하는 이유:
+  /** initialGameBoard 를 항상 깊은 복사를 해야하는 이유: 
+   * 
    * 모든 데이터(로그, 게임보드, 턴, 승리자 등)가 gameTurns state 에서 파생되는 점 때문이다. 
    * 이 점을 활용하여 gameTurns 만 초기화하면 게임보드와 승리자도 초기화할 수 있도록 설계되었다. 
    * 이 때 리액트가 초기화하지 못하는 initialGameBoard를 직접 수정한 상태라면 gameTurns를 초기화해도 게임이 초기화되지 않는다.
+   * 
+   * 항상 깊은 복사를 한다면 이러한 고민을 할 필요도 없을 것이다. 불변성을 지키는 게 언제나 좋은 이유.
   */
   let gameBoard = [...initialGameBoard].map(row => [...row]); 
   for (const turn of gameTurns) { // 제어하는 상태의 수는 최소화하되 각 상태에서 가능한 많은 정보와 값을 파생시키는 것이 리액트의 의도
@@ -61,7 +71,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol && 
       secondSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = playerNames[firstSquareSymbol];
     }
   }
   const hasDraw = gameTurns.length === 9 && !winner;
@@ -89,12 +99,21 @@ function App() {
     // activePlayer = "X"; // 이 또한 의미가 없다.
   }
 
+  function handlePlayerNameChange(playerSymbol, newName) {
+    setPlayerNames((prevNames) => {
+      return {
+        ...prevNames,
+        [playerSymbol]: newName
+      }
+    });
+  }
+
   return (
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player initialName="Player 1" symbol="X" isActive={activePlayer === "X"}/>
-          <Player initialName="Player 2" symbol="O" isActive={activePlayer === "O"}/>
+          <Player initialName="Player 1" symbol="X" isActive={activePlayer === "X"} onPlayerNameChange={handlePlayerNameChange}/>
+          <Player initialName="Player 2" symbol="O" isActive={activePlayer === "O"} onPlayerNameChange={handlePlayerNameChange}/>
         </ol>
 
         {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleRestart}/>}
