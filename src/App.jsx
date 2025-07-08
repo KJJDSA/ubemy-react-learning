@@ -6,6 +6,7 @@ import { useState } from "react"
 
 import Player from "./components/Player"
 import GameBoard from "./components/GameBoard"
+import Log from "./components/Log"
 
 function App() {
   // state 끌어올리기 (lifting state)
@@ -14,8 +15,30 @@ function App() {
   */
   const [activePlayer, setActivePlayer] = useState("X");
 
-  function handleSelectSquare() {
+  // state 끌어올리기
+  /** GamaBoard Log 둘 모두 현재 턴의 정보가 필요하다.
+   * 경기를 기록하는 GameBoard의 state 또한 끌어올려 App 컴포넌트에서 관리한다.
+  */
+  const [gameTurns, setGameturns] = useState([])
+
+  function handleSelectSquare(rowIndex, colIndex) {
     setActivePlayer((curActivePlayer) => curActivePlayer === "X" ? "O" : "X");
+    setGameturns(prevTurns => {
+      let currnetPlayer = 'X';
+
+      if (prevTurns.length > 0 && prevTurns[0].player === "X") {
+        currnetPlayer = "O";
+      }
+      const updtatedTurns = [
+        {square: {row:rowIndex, col: colIndex}, player: currnetPlayer}, 
+        /** activePlayer를 그대로 사용하지 않는 이유: 
+         * 두개의 state를 병합하는 행위가 되는데, activePlayer 의 상태가 변경된 후인지 등을 추가로 계산해야 한다. 
+        */
+        ...prevTurns
+      ];
+
+      return updtatedTurns;
+    });
   }
   return (
     <main>
@@ -25,10 +48,13 @@ function App() {
           <Player initialName="Player 2" symbol="O" isActive={activePlayer === "O"}/>
         </ol>
 
-        <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/>
+        <GameBoard 
+          onSelectSquare={handleSelectSquare} 
+          turns={gameTurns}  
+        />
       </div>
 
-      LOG
+      <Log />
     </main>
   )
 }
