@@ -73,9 +73,16 @@ function App() {
 
       return updtatedTurns;
     });
-
-
   }
+
+  function handleRestart() {
+    setGameturns([]);
+    // gameBoard를 초기화하는 것은 의미가 없다. 
+    // gameBoard는 gameTurns에서 파생되는 값이기 때문에, gameTurns가 초기화되면 자동으로 초기화된다.
+    // gameBoard = initialGameBoaurd; 
+    // activePlayer = "X"; // 이 또한 의미가 없다.
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -84,7 +91,7 @@ function App() {
           <Player initialName="Player 2" symbol="O" isActive={activePlayer === "O"}/>
         </ol>
 
-        {(winner || hasDraw) && <GameOver winner={winner}/>}
+        {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleRestart}/>}
         <GameBoard 
           onSelectSquare={handleSelectSquare} 
           board={gameBoard}  
