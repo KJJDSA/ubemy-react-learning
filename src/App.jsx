@@ -8,27 +8,33 @@ import Player from "./components/Player"
 import GameBoard from "./components/GameBoard"
 import Log from "./components/Log"
 
-function App() {
-  // state 끌어올리기 (lifting state)
-  /** Player GameBoard 둘 모두 현재 턴의 정보가 필요하다. 
-   * 이것을 관리하는 state를 두 컴포넌트에 모두 만들지 말고 상위 컴포넌트인 App에서 관리한다.
-  */
-  const [activePlayer, setActivePlayer] = useState("X");
+function deriveActivePlayer(gameTurns) {
+  let currnetPlayer = 'X';
 
+  if (gameTurns.length > 0 && gameTurns[0].player === "X") {
+    currnetPlayer = "O";
+  }
+
+  return currnetPlayer;
+}
+
+
+function App() {
   // state 끌어올리기
   /** GamaBoard Log 둘 모두 현재 턴의 정보가 필요하다.
    * 경기를 기록하는 GameBoard의 state 또한 끌어올려 App 컴포넌트에서 관리한다.
   */
   const [gameTurns, setGameturns] = useState([])
 
-  function handleSelectSquare(rowIndex, colIndex) {
-    setActivePlayer((curActivePlayer) => curActivePlayer === "X" ? "O" : "X");
-    setGameturns(prevTurns => {
-      let currnetPlayer = 'X';
 
-      if (prevTurns.length > 0 && prevTurns[0].player === "X") {
-        currnetPlayer = "O";
-      }
+  // gameTurns 가 App에 존재한다면 activePlayer가 굳이 state로 존재할 필요가 없다.
+  // state의는 최소한으로 유지하는 것이 좋다.
+  // const [activePlayer, setActivePlayer] = useState("X");
+  const activePlayer = deriveActivePlayer(gameTurns);
+
+  function handleSelectSquare(rowIndex, colIndex) {
+    setGameturns(prevTurns => {
+      const currnetPlayer = deriveActivePlayer(prevTurns);
       const updtatedTurns = [
         {square: {row:rowIndex, col: colIndex}, player: currnetPlayer}, 
         /** activePlayer를 그대로 사용하지 않는 이유: 
