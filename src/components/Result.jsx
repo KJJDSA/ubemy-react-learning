@@ -20,9 +20,9 @@ const Result = ({data}) => {
           <tr key={index}>
             <td>{analData.year}</td>
             <td>{formatter.format(analData.annualInvestment)}</td>
-            <td>{analData.interest}</td>
-            <td>{analData.valueEndOfYear}</td>
-            <td>{"?"}</td>
+            <td>{formatter.format(analData.interest)}</td>
+            <td>{formatter.format(analData.valueEndOfYear)}</td>
+            <td>{formatter.format(0)}</td>
           </tr>
         ))}
       </tbody>
