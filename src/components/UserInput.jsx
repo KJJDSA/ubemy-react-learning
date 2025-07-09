@@ -3,20 +3,21 @@ import React from 'react'
 const UserInput = () => {
   return (
     <main id="user-input" className="input-group">
-      <div>
-        <label htmlFor="input">INITIAL INVESTMENT</label>
-        <input type="number" />
-      
-        <label htmlFor="input">ANNUAL INVESTMENT</label>
-        <input type="number" />
-      </div>
-      <div>
-        <label htmlFor="input">EXPECTED RETURN</label>
-        <input type="number" />
+        <label htmlFor="input">INITIAL INVESTMENT
+          <input type="number" />
+        </label>
+        
+        <label htmlFor="input">ANNUAL INVESTMENT
+          <input type="number" />
+        </label>
 
-        <label htmlFor="input">DURATION</label>
-        <input type="number" />
-      </div>
+        <label htmlFor="input">EXPECTED RETURN
+          <input type="number" />
+        </label>
+        
+        <label htmlFor="input">DURATION
+          <input type="number" />
+        </label>
     </main>
   )
 }
