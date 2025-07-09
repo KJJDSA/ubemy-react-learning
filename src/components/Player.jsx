@@ -17,7 +17,11 @@ export default function Player({initialName, symbol, isActive, onPlayerNameChang
      * 이것이 인수로 함수를 넣을 경우 즉각 변경되는 것 처럼 보이는 이유이다. 
      */
     setIsEditing((prev) => !prev); 
-    onPlayerNameChange(symbol, playerName);
+
+    // isEditing 상태일 떄만 onPlayerNameChange를 호출한다. 위에서 토글되더라도 직접호출한 경우에는 렌더링직후 값을 가져옴.
+    if (isEditing) {
+      onPlayerNameChange(symbol, playerName);
+    }
   }
   
   // jsx 에서 분기하지 않고 변수로 지정한 뒤 if 문을 사용했다. 간결하고 이후 변경된 이름을 저장할 때 value 를 뽑아 사용할 때도 더 편리할 것 같다.
