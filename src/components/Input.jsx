@@ -5,7 +5,7 @@ const Input = ({value=0, type,  onChange, children}) => {
   return (
     <p>
       <label htmlFor="input">{children}</label>
-      <input required type="number" value={value} onChange={(event) => onChange(event,type)}/>
+      <input required type="number" value={value} onChange={(event) => onChange(event.target.value,type)}/>
     </p>
   )
 }

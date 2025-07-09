@@ -11,11 +11,10 @@ function App() {
     duration:10
   })
 
-  function handleChangeInput(event, type) {
-    const value = event.target.value
+  function handleChangeInput(newValue, type) {
     setInvestmentInput((prev) => ({ // 새로운 객체를 만듦(리액트가 바뀌었다고 인식)
       ...prev, // 이전 값 가져오기
-      [type]: value // [] 키값
+      [type]: newValue // [] 키값
     }))
   }
   return (
