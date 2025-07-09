@@ -3,10 +3,10 @@ import React from 'react'
 const Input = ({value=0, type,  onChange, children}) => {
   
   return (
-    <label htmlFor="input">
-      {children}
+    <p>
+      <label htmlFor="input">{children}</label>
       <input type="number" value={value} onChange={(event) => onChange(event,type)}/>
-    </label>
+    </p>
   )
 }
 

@@ -23,13 +23,11 @@ function App() {
       <Header />
       <main id="user-input">
         <div className="input-group">
-          <Input value={investmentInput.initialInvestment} type="initialInvestment" onChange={handleChangeInput}>INITIAL INVESTMENT</Input>  
+          <Input value={investmentInput.initialInvestment} type="initialInvestment" onChange={handleChangeInput}>INITIAL INVESTMENT</Input>   
           <Input value={investmentInput.annualInvestment} type="annualInvestment" onChange={handleChangeInput}>ANNUAL INVESTMENT</Input> 
-        </div>
-        <div className="input-group">
           <Input value={investmentInput.expectedReturn} type="expectedReturn" onChange={handleChangeInput}>EXPECTED RETURN</Input>  
           <Input value={investmentInput.duration} type="duration" onChange={handleChangeInput}>DURATION</Input>  
-        </div>
+          </div>
       </main>
       <Result data={investmentInput}/>
     </>
