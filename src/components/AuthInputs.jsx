@@ -14,7 +14,7 @@ const Label = styled.label`
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6b7280;
+  color: ${(props) => props.invalid ? '#f87171' : '#6b7280'};/* 해당 styled-component 의 props 를 받아와 동적으로 사용할 수 있다. */
 `
 
 const Input = styled.input`
@@ -52,7 +52,7 @@ export default function AuthInputs() {
       {/* styled components 를 사용해 하나의 태그 리터럴 템플릿을 생성하면, 그것에 대해 고유한 클래스를 부여하고 적용된 태그들에게 해당 클래스를 부여함   */}
       <ControlContainer >
         <p>
-          <Label className={`label ${emailNotValid ? 'invalid' : ''}`}>Email</Label>
+          <Label invalid={emailNotValid}>Email</Label>
           <Input
             type="email"
             // style={{
