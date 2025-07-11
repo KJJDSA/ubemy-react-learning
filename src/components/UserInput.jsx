@@ -1,24 +1,13 @@
-import React from 'react'
+import Input from "./Input.jsx"
 
-const UserInput = () => {
+const UserInput = ({data, onChange}) => {
   return (
-    <main id="user-input" className="input-group">
-        <label htmlFor="input">INITIAL INVESTMENT
-          <input type="number" />
-        </label>
-        
-        <label htmlFor="input">ANNUAL INVESTMENT
-          <input type="number" />
-        </label>
-
-        <label htmlFor="input">EXPECTED RETURN
-          <input type="number" />
-        </label>
-        
-        <label htmlFor="input">DURATION
-          <input type="number" />
-        </label>
-    </main>
+    <div className="input-group">
+      <Input value={data.initialInvestment} inputId="initialInvestment" onChange={onChange}>INITIAL INVESTMENT</Input>   
+      <Input value={data.annualInvestment} inputId="annualInvestment" onChange={onChange}>ANNUAL INVESTMENT</Input> 
+      <Input value={data.expectedReturn} inputId="expectedReturn" onChange={onChange}>EXPECTED RETURN</Input>  
+      <Input value={data.duration} inputId="duration" onChange={onChange}>DURATION</Input>  
+    </div>
   )
 }
 

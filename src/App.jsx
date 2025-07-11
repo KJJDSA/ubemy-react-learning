@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Header from "./components/Header.jsx"
-import Input from "./components/Input.jsx"
 import Result from "./components/Result.jsx"
+import UserInput from "./components/UserInput.jsx"
 
 function App() {
   const [investmentInput, setInvestmentInput] = useState({
@@ -21,12 +21,7 @@ function App() {
     <>
       <Header />
       <main id="user-input">
-        <div className="input-group">
-          <Input value={investmentInput.initialInvestment} inputId="initialInvestment" onChange={handleChangeInput}>INITIAL INVESTMENT</Input>   
-          <Input value={investmentInput.annualInvestment} inputId="annualInvestment" onChange={handleChangeInput}>ANNUAL INVESTMENT</Input> 
-          <Input value={investmentInput.expectedReturn} inputId="expectedReturn" onChange={handleChangeInput}>EXPECTED RETURN</Input>  
-          <Input value={investmentInput.duration} inputId="duration" onChange={handleChangeInput}>DURATION</Input>  
-          </div>
+        <UserInput data={investmentInput} onChange={handleChangeInput}/>
       </main>
       <Result data={investmentInput}/>
     </>
