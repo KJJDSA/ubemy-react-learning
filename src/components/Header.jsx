@@ -9,6 +9,7 @@ export default function Header() {
       {/* 인라인 스타일 단점: 모든 요소를 개별적으로 스타일해아함 / 디자이너가 스타일을 직접 수정할 때 어려움이 있음(JSX 코드에 합쳐져 있음으로)*/}
       
       {/* Header.css 가 아닌 Header.module.css 를 사용하면 import를 사용해 객체로 클래스를 명시해야 적용이 된다. */}
+      {/* 빌드 과정중에 Header.module.css 의 클래스명이 모두 고유한 값으로 변형되기 때문이다.  */}
       <h1 class={style.paragraph}>ReactArt</h1>
       <p>A community of artists and art-lovers.</p>
     </header>
