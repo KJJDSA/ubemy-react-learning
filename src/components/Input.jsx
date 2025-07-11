@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Input = ({value=0, type,  onChange, children}) => {
+const Input = ({value=0, inputId,  onChange, children}) => {
   
   return (
     <p>
       <label htmlFor="input">{children}</label>
-      <input required type="number" value={value} onChange={(event) => onChange(event.target.value,type)}/>
+      <input required value={value} onChange={(event) => onChange(event.target.value,inputId)}/>
     </p>
   )
 }

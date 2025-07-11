@@ -11,10 +11,10 @@ function App() {
     duration:10
   })
 
-  function handleChangeInput(newValue, type) {
+  function handleChangeInput(newValue, inputId) {
     setInvestmentInput((prev) => ({ // 새로운 객체를 만듦(리액트가 바뀌었다고 인식)
       ...prev, // 이전 값 가져오기
-      [type]: newValue // [] 키값
+      [inputId]: newValue // [] 키값
     }))
   }
   return (
@@ -22,10 +22,10 @@ function App() {
       <Header />
       <main id="user-input">
         <div className="input-group">
-          <Input value={investmentInput.initialInvestment} type="initialInvestment" onChange={handleChangeInput}>INITIAL INVESTMENT</Input>   
-          <Input value={investmentInput.annualInvestment} type="annualInvestment" onChange={handleChangeInput}>ANNUAL INVESTMENT</Input> 
-          <Input value={investmentInput.expectedReturn} type="expectedReturn" onChange={handleChangeInput}>EXPECTED RETURN</Input>  
-          <Input value={investmentInput.duration} type="duration" onChange={handleChangeInput}>DURATION</Input>  
+          <Input value={investmentInput.initialInvestment} inputId="initialInvestment" onChange={handleChangeInput}>INITIAL INVESTMENT</Input>   
+          <Input value={investmentInput.annualInvestment} inputId="annualInvestment" onChange={handleChangeInput}>ANNUAL INVESTMENT</Input> 
+          <Input value={investmentInput.expectedReturn} inputId="expectedReturn" onChange={handleChangeInput}>EXPECTED RETURN</Input>  
+          <Input value={investmentInput.duration} inputId="duration" onChange={handleChangeInput}>DURATION</Input>  
           </div>
       </main>
       <Result data={investmentInput}/>
