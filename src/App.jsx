@@ -17,13 +17,17 @@ function App() {
       [inputId]: newValue // [] 키값
     }))
   }
+
+  const inputIsValid = investmentInput.duration > 0
+  
   return (
     <>
       <Header />
       <main id="user-input">
         <UserInput data={investmentInput} onChange={handleChangeInput}/>
       </main>
-      <Result data={investmentInput}/>
+      {!inputIsValid && <p className="center">Please enter a duration greater than zero.</p>}
+      {inputIsValid && <Result data={investmentInput}/>}
     </>
   )
 }
