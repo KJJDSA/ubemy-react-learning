@@ -5,7 +5,8 @@ export default function Header() {
   return (
     <header>
       <img src={logo} alt="A canvas" />
-      {/* 인라인 스타일 장점: 빠르고 쉽게 JSX 에 스타일을 부여할 수 있음 / 단점: 모든 요소를 개별적으로 스타일해아함*/}
+      {/* 인라인 스타일 장점: 빠르고 쉽게 JSX 에 스타일을 부여할 수 있음 / 스코프가 가능하며 동적으로 스타일 부여가 가능함*/}
+      {/* 인라인 스타일 단점: 모든 요소를 개별적으로 스타일해아함 / 디자이너가 스타일을 직접 수정할 때 어려움이 있음(JSX 코드에 합쳐져 있음으로)*/}
       <h1 style={{
         fontSize: "1.5rem",
         fontWeight: "600",
