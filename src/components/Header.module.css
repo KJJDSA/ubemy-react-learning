@@ -1,3 +1,5 @@
+/* 최상위 외 분리된 css파일이 있다면 설정해주어야함 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

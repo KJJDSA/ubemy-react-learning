@@ -1,3 +1,4 @@
+/* 최상위 css 파일에 명시해주어야 함 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
