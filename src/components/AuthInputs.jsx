@@ -23,8 +23,7 @@ const Input = styled.input`
   line-height: 1.5;
   background-color: ${({invalid}) => invalid ? '#fed2d2' : '#d1d5db'};
   color: ${({invalid}) => invalid ? '#ef4444' : '#374151'};
-  ${({invalid}) => invalid ? 'border-color: #f73f3f;' : ''}
-  bolder: 1px solid transparent;
+  border: 1px solid ${({invalid}) => invalid ? '#f73f3f': 'transparent'}; /* border-color 를 따로만드는 대신 border에 넣으면 편하다 */
   border-radius: 0.25rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 `
