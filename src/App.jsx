@@ -16,7 +16,7 @@ function App() {
     setUserInput((prevUserInput) => {
       return {
         ...prevUserInput,
-        [inputIdentifier]: newValue,
+        [inputIdentifier]: +newValue,
       };
     });
   }
@@ -25,7 +25,8 @@ function App() {
     <>
       <Header />
       <UserInput userInput={userInput} onChange={handleChange} />
-      <Results input={userInput} />
+      {userInput.duration <= 0 && <p className='center'>Invalid Input</p>}
+      {userInput.duration > 0 && <Results input={userInput} />}
     </>
   );
 }
