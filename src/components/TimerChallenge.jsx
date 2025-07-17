@@ -1,22 +1,22 @@
-import {useState, useRef} from 'react'
+import { useState, useRef } from 'react';
+import ResultModal from './ResultModal';
 
+const TimerChallenge = ({ title, targetTime }) => {
+  let timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다.
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [timerExpired, setTimerExpired] = useState(false);
 
-const TimerChallenge = ({title, targetTime}) => {
-  let timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다. 
-  const [timerStarted, setTimerStarted]= useState(false)
-  const [timerExpired, setTimerExpired]= useState(false)
-  
   function handleStart() {
     timer.current = setTimeout(() => {
-      setTimerExpired(true)
-    }, targetTime * 1000)
+      setTimerExpired(true);
+    }, targetTime * 1000);
 
-    setTimerStarted(true) // 이떄 useRef는 초기화되지 않는다.
+    setTimerStarted(true); // 이떄 useRef는 초기화되지 않는다.
   }
 
-  function handleStop(){
-    console.log(timer.current) // 37, 38.. 변수 때와 똑같이 뜨긴 하지만 어디를 눌러도 이 인스턴스의 타이머가 유지된다.
-    clearTimeout(timer.current) // 타이머가 정상적으로 삭제된다.
+  function handleStop() {
+    console.log(timer.current); // 37, 38.. 변수 때와 똑같이 뜨긴 하지만 어디를 눌러도 이 인스턴스의 타이머가 유지된다.
+    clearTimeout(timer.current); // 타이머가 정상적으로 삭제된다.
   }
   /* 타이머에 useRef 를 사용해야 하는 이유: 
   useRef는 DOM 을 참조하는데만 쓰는 것이 아닌, UI를 제외한 다양한 요소를 제어하고자 할 때 사용할 수 있다.
@@ -26,22 +26,24 @@ const TimerChallenge = ({title, targetTime}) => {
   */
 
   return (
-    <section className="challenge">
-      <h2>{title}</h2>
-      {timerExpired&& <p>You lost!</p>}
-      <p className="challenge-time">
-        {targetTime} second{targetTime > 1 ? 's' : ''}
-      </p>
-      <p>
-        <button onClick={timerStarted? handleStop : handleStart}>
-          Stop Challenge
-        </button>
-      </p>
-      <p className={timerStarted ? 'active' : undefined}>
-        {timerStarted ? 'Timer is running...' : 'Timer inactive'}
-      </p>
-    </section>
-  )
-}
+    <>
+      <section className="challenge">
+        <h2>{title}</h2>
+        {timerExpired && <p>You lost!</p>}
+        <p className="challenge-time">
+          {targetTime} second{targetTime > 1 ? 's' : ''}
+        </p>
+        <p>
+          <button onClick={timerStarted ? handleStop : handleStart}>
+            Stop Challenge
+          </button>
+        </p>
+        <p className={timerStarted ? 'active' : undefined}>
+          {timerStarted ? 'Timer is running...' : 'Timer inactive'}
+        </p>
+      </section>
+    </>
+  );
+};
 
-export default TimerChallenge
+export default TimerChallenge;
