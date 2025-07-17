@@ -18,7 +18,8 @@ const ResultModal = ({ ref, targetTime, remainingTime, onReset }) => {
     },
   }));
   return (
-    <dialog ref={dialog} className="result-modal">
+    // dialog 는 esc 키를 사용해서 닫을 수도 있다. 이 때 onReset 이 작동하도록 하기 위해선 dialog 의 onClose 내장속성을 사용하면 된다.
+    <dialog ref={dialog} className="result-modal" onClose={onReset}>
       {/* dialog 는 기본적으로 보이지 않으며 open 속성으로 강제로 보이게 하면 백그라운드가 흐려지지 않게된다.*/}
       {userLost && <h2>You lost.</h2>}
       {!userLost && <h2>Your score : {score}.</h2>}
