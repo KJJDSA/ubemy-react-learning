@@ -2,13 +2,15 @@ import { useState, useRef } from 'react';
 import ResultModal from './ResultModal';
 
 const TimerChallenge = ({ title, targetTime }) => {
-  let timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다.
+  const timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다.
+  const dialog = useRef(); // dialog html 요소를 참조한다.
   const [timerStarted, setTimerStarted] = useState(false);
   const [timerExpired, setTimerExpired] = useState(false);
 
   function handleStart() {
     timer.current = setTimeout(() => {
       setTimerExpired(true);
+      dialog.current.showModal();
     }, targetTime * 1000);
 
     setTimerStarted(true); // 이떄 useRef는 초기화되지 않는다.
@@ -27,9 +29,9 @@ const TimerChallenge = ({ title, targetTime }) => {
 
   return (
     <>
+      <ResultModal ref={dialog} result="lost" targetTime={targetTime} />
       <section className="challenge">
         <h2>{title}</h2>
-        {timerExpired && <p>You lost!</p>}
         <p className="challenge-time">
           {targetTime} second{targetTime > 1 ? 's' : ''}
         </p>

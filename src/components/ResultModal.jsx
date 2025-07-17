@@ -1,8 +1,9 @@
 import React from 'react';
 
-const ResultModal = ({ result, targetTime }) => {
+const ResultModal = ({ ref, result, targetTime }) => {
   return (
-    <dialog className="result-modal">
+    <dialog ref={ref} className="result-modal">
+      {/* dialog 는 기본적으로 보이지 않으며 open 속성으로 강제로 보이게 하면 백그라운드가 흐려지지 않게된다.*/}
       <h2>You {result}.</h2>
       <p>
         The Target time was <strong>{targetTime} seconds.</strong>
