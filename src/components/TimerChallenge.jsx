@@ -10,7 +10,7 @@ const TimerChallenge = ({ title, targetTime }) => {
   function handleStart() {
     timer.current = setTimeout(() => {
       setTimerExpired(true);
-      dialog.current.showModal();
+      dialog.current.open();
     }, targetTime * 1000);
 
     setTimerStarted(true); // 이떄 useRef는 초기화되지 않는다.

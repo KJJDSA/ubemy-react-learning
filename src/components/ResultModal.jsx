@@ -1,10 +1,19 @@
+import { useImperativeHandle, useRef } from 'react';
+
 /* 19버전 이상의 리액트에서는 이렇게 ref값을 넘기지만, 그 이전 리액트에서는 아래의 방법을 사용한다. */
 // import {forwardRef} from 'react';
 // const ResultModal = forwardRef(function ResultModal({ result, targetTime }, ref) {
 
 const ResultModal = ({ ref, result, targetTime }) => {
+  const dialog = useRef();
+  useImperativeHandle(ref, () => ({
+    /** showModal() */
+    open() {
+      dialog.current.showModal();
+    },
+  }));
   return (
-    <dialog ref={ref} className="result-modal">
+    <dialog ref={dialog} className="result-modal">
       {/* dialog 는 기본적으로 보이지 않으며 open 속성으로 강제로 보이게 하면 백그라운드가 흐려지지 않게된다.*/}
       <h2>You {result}.</h2>
       <p>
