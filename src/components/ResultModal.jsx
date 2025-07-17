@@ -1,4 +1,6 @@
-import React from 'react';
+/* 19버전 이상의 리액트에서는 이렇게 ref값을 넘기지만, 그 이전 리액트에서는 아래의 방법을 사용한다. */
+// import {forwardRef} from 'react';
+// const ResultModal = forwardRef(function ResultModal({ result, targetTime }, ref) {
 
 const ResultModal = ({ ref, result, targetTime }) => {
   return (
@@ -18,5 +20,5 @@ const ResultModal = ({ ref, result, targetTime }) => {
     </dialog>
   );
 };
-
+// )
 export default ResultModal;
