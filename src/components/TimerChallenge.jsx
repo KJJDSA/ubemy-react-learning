@@ -1,31 +1,29 @@
 import {useState, useRef} from 'react'
 
 
-let timer; // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다. 
 const TimerChallenge = ({title, targetTime}) => {
+  let timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다. 
   const [timerStarted, setTimerStarted]= useState(false)
   const [timerExpired, setTimerExpired]= useState(false)
-  console.log(timer)// setTimerStarted(true) 후 재랜더링시 37, 31 등의 숫자가 담긴다. 
+  
   function handleStart() {
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       setTimerExpired(true)
     }, targetTime * 1000)
 
-    setTimerStarted(true)
+    setTimerStarted(true) // 이떄 useRef는 초기화되지 않는다.
   }
 
   function handleStop(){
-    console.log(timer) // 37
-    clearTimeout(timer) //  timer 가 초기화되지 않았으므로 타이머가 지워진다.
-    /* 하나의 타이머만 실행할 경우 정상적으로 작동이 되지만, 두개의 타이머를 동시에 누를 경우 문제가 생긴다. 
-    1초를 누르고 5초를 누를 경우, 인스턴스 바깥에 정의된 timer는 5초 타이머로 바뀐다. 반대의 경우도 마찬가지다.    
-    가지고 있는 타이머의 포니터가 덮어씌워진 인스턴스는 멈출 방법이 사라지므로 you lose 를 반환할 수 밖에 없어진다. 
-    5초 -> 1초 -> 1초 -> 5초를 할 경우, 5초 타이머에 대한 포인터는 사라진 상태이므로 5초 포인터는 lose 를 반환한다. 
-    반대로 1초 -> 5초 -> 5초 -> 1초를 할 경우, 1초 타이머에 대한 포인터는 사라진 상태이므로 1초 포인터는 lose 를 반환한다. 
-
-    인스턴스 바깥은 리액트의 통제 밖에 있으므로, 초기화되지도 않지만, 관리하기도 어려운 것이다. 
-    */
+    console.log(timer.current) // 37, 38.. 변수 때와 똑같이 뜨긴 하지만 어디를 눌러도 이 인스턴스의 타이머가 유지된다.
+    clearTimeout(timer.current) // 타이머가 정상적으로 삭제된다.
   }
+  /* 타이머에 useRef 를 사용해야 하는 이유: 
+  useRef는 DOM 을 참조하는데만 쓰는 것이 아닌, UI를 제외한 다양한 요소를 제어하고자 할 때 사용할 수 있다.
+  타이머는 UI 에 직접적인 영향을 주지 않는 요소이지만, 렌더링시 초기화될 경우 제어할 수 있는 포인터를 잃어버린다. 
+  때문에 useRef 에 포인터를 저장하여, 이후 UI 의 변동이 있더라도 초기화되지 않고 제어가 가능하다.
+  인스턴스 바깥에 변수를 만드는 것 보다 더욱 독립적이며 안정적이다.  
+  */
 
   return (
     <section className="challenge">
