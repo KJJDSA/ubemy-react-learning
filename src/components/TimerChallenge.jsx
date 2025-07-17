@@ -4,21 +4,38 @@ import ResultModal from './ResultModal';
 const TimerChallenge = ({ title, targetTime }) => {
   const timer = useRef(); // 타이머를 담는 변수이다. 재렌더링 시 초기화되지 않는다.
   const dialog = useRef(); // dialog html 요소를 참조한다.
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
 
-  function handleStart() {
-    timer.current = setTimeout(() => {
-      setTimerExpired(true);
-      dialog.current.open();
-    }, targetTime * 1000);
+  const [remainingTime, setRemainingTime] = useState(targetTime * 1000);
+  const [timerIsActive, setTimerIsActive] = useState(false);
 
-    setTimerStarted(true); // 이떄 useRef는 초기화되지 않는다.
+  console.log(remainingTime, timerIsActive);
+
+  // 타임아웃(lost)
+  if (remainingTime <= 0 && timerIsActive) {
+    setTimerIsActive(false);
+    clearInterval(timer.current); // 타이머가 정상적으로 삭제된다.
+    dialog.current.open();
   }
 
+  function resetTimer() {
+    setRemainingTime(targetTime * 1000);
+    setTimerIsActive(false);
+  }
+
+  function handleStart() {
+    timer.current = setInterval(() => {
+      // 10밀리초마다 10씩 까임 (결과적으로 targetTime 이 지나면 0이 됨)
+      setRemainingTime((prev) => prev - 10);
+    }, 10);
+
+    // 타이머가 시작되는 UI 로 변경
+    setTimerIsActive(true);
+  }
+
+  // 타임아웃 전 버튼을 누름(win)
   function handleStop() {
-    console.log(timer.current); // 37, 38.. 변수 때와 똑같이 뜨긴 하지만 어디를 눌러도 이 인스턴스의 타이머가 유지된다.
-    clearTimeout(timer.current); // 타이머가 정상적으로 삭제된다.
+    clearInterval(timer.current); // 타이머가 정상적으로 삭제된다.
+    dialog.current.open();
   }
   /* 타이머에 useRef 를 사용해야 하는 이유: 
   useRef는 DOM 을 참조하는데만 쓰는 것이 아닌, UI를 제외한 다양한 요소를 제어하고자 할 때 사용할 수 있다.
@@ -29,19 +46,24 @@ const TimerChallenge = ({ title, targetTime }) => {
 
   return (
     <>
-      <ResultModal ref={dialog} result="lost" targetTime={targetTime} />
+      <ResultModal
+        ref={dialog}
+        targetTime={targetTime}
+        remainingTime={remainingTime}
+        onReset={resetTimer}
+      />
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
           {targetTime} second{targetTime > 1 ? 's' : ''}
         </p>
         <p>
-          <button onClick={timerStarted ? handleStop : handleStart}>
+          <button onClick={timerIsActive ? handleStop : handleStart}>
             Stop Challenge
           </button>
         </p>
-        <p className={timerStarted ? 'active' : undefined}>
-          {timerStarted ? 'Timer is running...' : 'Timer inactive'}
+        <p className={timerIsActive ? 'active' : undefined}>
+          {timerIsActive ? 'Timer is running...' : 'Timer inactive'}
         </p>
       </section>
     </>

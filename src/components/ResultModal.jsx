@@ -4,8 +4,13 @@ import { useImperativeHandle, useRef } from 'react';
 // import {forwardRef} from 'react';
 // const ResultModal = forwardRef(function ResultModal({ result, targetTime }, ref) {
 
-const ResultModal = ({ ref, result, targetTime }) => {
+const ResultModal = ({ ref, targetTime, remainingTime, onReset }) => {
   const dialog = useRef();
+
+  const userLost = remainingTime <= 0;
+  const formatedSecond = (remainingTime / 1000).toFixed(2);
+  const score = 1 - (remainingTime / (targetTime * 1000)) * 100;
+
   useImperativeHandle(ref, () => ({
     /** showModal() */
     open() {
@@ -15,15 +20,17 @@ const ResultModal = ({ ref, result, targetTime }) => {
   return (
     <dialog ref={dialog} className="result-modal">
       {/* dialog 는 기본적으로 보이지 않으며 open 속성으로 강제로 보이게 하면 백그라운드가 흐려지지 않게된다.*/}
-      <h2>You {result}.</h2>
+      {userLost && <h2>You lost.</h2>}
+      {!userLost && <h2>Your score : {score}.</h2>}
       <p>
         The Target time was <strong>{targetTime} seconds.</strong>
       </p>
       <p>
-        You stopped the timer with <strong>X seconds left.</strong>
+        You stopped the timer with{' '}
+        <strong>{formatedSecond} seconds left.</strong>
       </p>
       {/* dialog 내부에 form 태그를 넣고 action 을 dialog 로 하면 닫기 버튼이 된다. 자바스크립트 내장 기능 */}
-      <form action="dialog">
+      <form action="dialog" onSubmit={onReset}>
         <button>Close</button>
       </form>
     </dialog>
