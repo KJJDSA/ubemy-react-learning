@@ -24,8 +24,15 @@ function App() {
   ]);
 
   // 스위치 모드를 넣는것이 좋을까(아래 조건으로 분기하는 handleSwich)? << 역시만들어야 하지 않을까?
-  function handleSwich() {
-    setIsCreateFormOn(true);
+  function handleSwich(mode, ...arg) {
+    if (mode === "create") {
+      setIsCreateFormOn(true);
+    }
+    if (mode === "project") {
+      const newSelectedProjectNumber = arg[0];
+      setSelectedProjectNumber(newSelectedProjectNumber);
+      setIsCreateFormOn(false);
+    }
   }
 
   function handleProjectSave(inputData) {
@@ -64,7 +71,7 @@ function App() {
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
-        <SideBar />
+        <SideBar projectList={projectList} onSwich={handleSwich} />
         {/* selectedProjectNumber 가 null 이면 NoProjectSelected 를 보여준다*/}
         {projectList.length === 0 &&
           selectedProjectNumber === null &&

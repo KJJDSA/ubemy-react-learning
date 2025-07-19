@@ -55,11 +55,6 @@ const ProjectCreateForm = ({ onCancel, onSave }) => {
         [key]: value,
       };
     });
-    console.log(`
-      ${inputData.title} /
-      ${inputData.discription} /
-      ${inputData.dueDate} /
-    `);
   }
 
   function handleClick() {
