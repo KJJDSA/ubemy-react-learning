@@ -9,7 +9,7 @@ function App() {
   const [isCreateFormOn, setIsCreateFormOn] = useState(false);
   const [projectList, setPrejectList] = useState([]);
 
-  // 스위치 모드를 넣는것이 좋을까(아래 조건으로 분기하는 handleSwich)? 아니면 저장란에 state를 변경하면 알아서 UI가 그려지게 하는게 좋을까.
+  // 스위치 모드를 넣는것이 좋을까(아래 조건으로 분기하는 handleSwich)? << 역시만들어야 하지 않을까?
   function handleSwich(mode) {
     if (mode === "create") {
       setIsCreateFormOn(true);
