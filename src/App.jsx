@@ -12,16 +12,9 @@ function createInitialedProject(data) {
 }
 
 function App() {
-  const [selectedProjectNumber, setSelectedProjectNumber] = useState(0); // 선택된 프로젝트의 넘버
+  const [selectedProjectNumber, setSelectedProjectNumber] = useState(null); // 선택된 프로젝트의 넘버
   const [isCreateFormOn, setIsCreateFormOn] = useState(false);
-  const [projectList, setProjectList] = useState([
-    {
-      title: "테스트",
-      discription: "안녕하세요",
-      dueDate: "2025-07-23",
-      tasks: [],
-    },
-  ]);
+  const [projectList, setProjectList] = useState([]);
 
   // 스위치 모드를 넣는것이 좋을까(아래 조건으로 분기하는 handleSwich)? << 역시만들어야 하지 않을까?
   function handleSwich(mode, ...arg) {
@@ -71,7 +64,11 @@ function App() {
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
-        <SideBar projectList={projectList} onSwich={handleSwich} currentIndex={selectedProjectNumber}/>
+        <SideBar
+          projectList={projectList}
+          onSwich={handleSwich}
+          currentIndex={selectedProjectNumber}
+        />
         {/* selectedProjectNumber 가 null 이면 NoProjectSelected 를 보여준다*/}
         {projectList.length === 0 &&
           selectedProjectNumber === null &&
