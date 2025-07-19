@@ -34,19 +34,20 @@ function App() {
   function handleCancel() {
     setIsCreateFormOn(false);
   }
-
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
         <SideBar />
         {/* selectedProjectNumber 가 null 이면 NoProjectSelected 를 보여준다*/}
-        {selectedProjectNumber === null && !isCreateFormOn && (
-          <NoProjectSelected onSwich={handleSwich} />
-        )}
+        {(projectList.length === 0 || selectedProjectNumber !== null) &&
+          !isCreateFormOn && <NoProjectSelected onSwich={handleSwich} />}
         {/* selectedProjectNumber 가 null 이 아니면 NoProjectSelected 를 보여준다*/}
-        {selectedProjectNumber !== null && !isCreateFormOn && (
-          <ProjectTodoList project={projectList[selectedProjectNumber]} />
-        )}
+        {(projectList.length > 0 || selectedProjectNumber !== null) &&
+          !isCreateFormOn && (
+            <ProjectTodoList
+              project={projectList[selectedProjectNumber ?? 0]}
+            />
+          )}
         {/* isCreateFormOn 이 true 이면 항상 ProjectCreateForm 을 보여준다.*/}
         {isCreateFormOn && (
           <ProjectCreateForm onSave={handleSave} onCancel={handleCancel} />
