@@ -71,7 +71,7 @@ function App() {
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
-        <SideBar projectList={projectList} onSwich={handleSwich} />
+        <SideBar projectList={projectList} onSwich={handleSwich} currentIndex={selectedProjectNumber}/>
         {/* selectedProjectNumber 가 null 이면 NoProjectSelected 를 보여준다*/}
         {projectList.length === 0 &&
           selectedProjectNumber === null &&
