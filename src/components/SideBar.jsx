@@ -14,7 +14,7 @@ const SideBar = ({ projectList, onSwich }) => {
       </button>
       <ul className="mt-8">
         {projectList.map((project, index) => (
-          <li>
+          <li key={project.title + index}>
             <button
               key={project.title + index}
               onClick={() => onSwich("project", index)}
