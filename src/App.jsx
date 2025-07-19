@@ -36,7 +36,7 @@ function App() {
     });
     setIsCreateFormOn(false);
     setSelectedProjectNumber((prev) =>
-      prev === null ? 0 : projectList.length - 1
+      prev === null ? 0 : projectList.length
     );
   }
 
