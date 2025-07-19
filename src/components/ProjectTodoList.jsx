@@ -1,7 +1,9 @@
 import { useRef } from "react";
+import Modal from "./Modal";
 
 const ProjectTodoList = ({ project, onTaskSaveClick, onProjectDelete }) => {
   const newTask = useRef();
+  const deleteDialog = useRef();
   function handleAddTaskClick(task) {
     const newArray = [...project.tasks];
     newArray.push(task);
@@ -11,16 +13,25 @@ const ProjectTodoList = ({ project, onTaskSaveClick, onProjectDelete }) => {
     const newArray = [...project.tasks];
     newArray.splice(index, 1);
     onTaskSaveClick(newArray);
+    
   }
+
+  function handleDialogOpen() {
+    deleteDialog.current.open();
+  }
+
   return (
     <div className="mt-24 w-2/3">
+      <Modal ref={deleteDialog} onProjectDelete={onProjectDelete}>
+        프로젝트를 삭제하시겠습니까?
+      </Modal>
       <header className=" pb-4 mb-4 border-b-2 border-stone-300">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-stone-600 mb-2">
             {project.title}
           </h1>
           <button
-            onClick={onProjectDelete}
+            onClick={handleDialogOpen}
             className="text-stone-700 hover:text-stone-950"
           >
             프로젝트 삭제
