@@ -95,18 +95,14 @@ const ProjectCreateForm = ({ onCancel, onSave }) => {
       <CreateFormInput
         type="text"
         value={inputData.title}
-        onChangeKey={"title"}
-        onChange={handleChange}
+        onChange={(event) => handleChange("title", event.target.value)}
         validation={validateData.title}
-        textArea={false}
       >
         제목
       </CreateFormInput>
       <CreateFormInput
-        type="text"
         value={inputData.discription}
-        onChangeKey={"discription"}
-        onChange={handleChange}
+        onChange={(event) => handleChange("discription", event.target.value)}
         validation={validateData.discription}
         textArea={true}
       >
@@ -115,10 +111,8 @@ const ProjectCreateForm = ({ onCancel, onSave }) => {
       <CreateFormInput
         type="date"
         value={inputData.dueDate}
-        onChangeKey={"dueDate"}
-        onChange={handleChange}
+        onChange={(event) => handleChange("dueDate", event.target.value)}
         validation={validateData.dueDate}
-        textArea={false}
       >
         마감일
       </CreateFormInput>
