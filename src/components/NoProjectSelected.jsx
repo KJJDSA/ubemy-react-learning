@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "../assets/no-projects.png";
 
+// 프로젝트가 없을 경우 대체하는 컴포넌트 (fallback component)
 const NoProjectSelected = ({ onSwich }) => {
   return (
     <div className="mt-24 text-center w-2/3">
