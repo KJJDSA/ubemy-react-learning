@@ -1,4 +1,12 @@
-export default function Cart({ items, onUpdateItemQuantity }) {
+import {use, useContext} from 'react'
+import { CartContext } from '../store/CartContext';
+
+export default function Cart({ onUpdateItemQuantity }) {
+  // context 를 가져오는 방법 2가지 
+  const {items} = useContext(CartContext);
+  // use 는 리액트 19이상부터 사용 가능하며 코드블록 내부에서도 사용이 가능하다(if, for 등등)
+  // const {items} = use(CartContext)
+
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0

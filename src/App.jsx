@@ -71,12 +71,12 @@ function App() {
   return (
     <>
       {/* 18버전 이하는 <CartContext.provider> */}
-      {/** createContext 
-       * 여러개의 컴포넌트를 랩핑하여 컨텍스트를 공유할 수 있다. 
+      {/** ⭐️ createContext (react context api)
+       * 여러개의 컴포넌트를 랩핑하여 컨텍스트를 공유할 수 있다.
        * drilling 으로 가장 아래의 컴포넌트까지 전달할 필요 없이 CartContext 내부라면 컨텍스트 값을 얼마든지 사용할 수 있다.
        * 관행으로 context 파일을 저장하는 디렉토리는 store로 하지만 강제성은 없다.
        */}
-      <CartContext>
+      <CartContext value={{ items: [/* ⛔️ 항상 value 속성을 추가해 줘야 한다. */] }} >
         <Header
           cart={shoppingCart}
           onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
