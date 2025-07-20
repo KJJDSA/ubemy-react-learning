@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 const SideBar = ({ projectList, onSwich, currentIndex }) => {
   return (
@@ -6,12 +7,8 @@ const SideBar = ({ projectList, onSwich, currentIndex }) => {
       <h2 className="mb-8 font-bold uppercase md:text-xl text-stone-200">
         YOUR PROJECTS
       </h2>
-      <button
-        onClick={() => onSwich("create")}
-        className="px-4 py-2 text-xs md:text-base rounded-md bg-stone-700 text-stone-400 hover:bg-stone-600 hover:text-stone-100"
-      >
-        + Add Project
-      </button>
+      {/* 버튼같은 작은요소부터 재사용성을 끌어올릴 수 있어야 한다. onClick 속성은 꼭 넘어가서 정의하지 않아도 동작한다. */}
+      <Button onClick={() => onSwich("create")}>+ 프로젝트 만들기</Button>
       <ul className="mt-8">
         {projectList.map((project, index) => (
           <li key={project.title + index}>
