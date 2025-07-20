@@ -15,8 +15,8 @@ const SideBar = ({ projectList, onSwich, currentIndex }) => {
             <button
               key={project.title + index}
               onClick={() => onSwich("project", index)}
-              className={`w-full text-left px-6 py-2 rounded-md bg-stone-900 text-stone-50 hover:bg-stone-800${
-                currentIndex === index && " bg-stone-800"
+              className={`w-full text-left px-6 py-2 rounded-md text-stone-50 hover:bg-stone-800${
+                currentIndex === index ? " bg-stone-800" : "bg-stone-900"
               }`}
             >
               {project.title}

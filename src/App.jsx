@@ -61,6 +61,18 @@ function App() {
     });
     setSelectedProjectNumber((prev) => (prev === 0 ? null : prev - 1));
   }
+
+  let swichMode = "";
+  if (isCreateFormOn) {
+    swichMode = "createForm";
+  } else if (projectList.length > 0) {
+    swichMode = "showProject";
+  } else {
+    swichMode = "noProject";
+  }
+
+  console.log(selectedProjectNumber);
+
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
@@ -69,25 +81,24 @@ function App() {
           onSwich={handleSwich}
           currentIndex={selectedProjectNumber}
         />
-        {/* selectedProjectNumber 가 null 이면 NoProjectSelected 를 보여준다*/}
-        {projectList.length === 0 &&
-          selectedProjectNumber === null &&
-          !isCreateFormOn && <NoProjectSelected onSwich={handleSwich} />}
-        {/* selectedProjectNumber 가 null 이 아니면 NoProjectSelected 를 보여준다*/}
-        {(projectList.length > 0 || selectedProjectNumber !== null) &&
-          !isCreateFormOn && (
-            <ProjectTodoList
-              project={projectList[selectedProjectNumber ?? 0]}
-              onTaskSaveClick={handleTaskSaveClick} // tesk 추가, 삭제
-              onProjectDelete={handleProjectDelete}
-            />
-          )}
-        {/* isCreateFormOn 이 true 이면 항상 ProjectCreateForm 을 보여준다.*/}
-        {isCreateFormOn && (
+
+        {swichMode === "createForm" && (
           <ProjectCreateForm
             onSave={handleProjectSave}
             onCancel={handleCancel}
           />
+        )}
+
+        {swichMode === "showProject" && (
+          <ProjectTodoList
+            project={projectList[selectedProjectNumber ?? 0]}
+            onTaskSaveClick={handleTaskSaveClick} // tesk 추가, 삭제
+            onProjectDelete={handleProjectDelete}
+          />
+        )}
+
+        {swichMode === "noProject" && (
+          <NoProjectSelected onSwich={handleSwich} />
         )}
       </main>
     </>
