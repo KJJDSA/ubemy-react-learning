@@ -1,7 +1,10 @@
 import { useImperativeHandle, useRef, useEffect } from "react";
 
-const Modal = ({ children, ref, onProjectDelete }) => {
+// onProjectDelete 등의 리스너 함수명으로 지으면 재사용이 어렵다.
+const Modal = ({ children, ref, onAccept = undefined, onDeny = undefined }) => {
   const dialog = useRef(null);
+  const acceptButton = useRef(null);
+  const denyButton = useRef(null);
 
   useEffect(() => {
     /**
@@ -12,7 +15,13 @@ const Modal = ({ children, ref, onProjectDelete }) => {
      * 즉 백드롭을 클릭했을 때만 event.target이 dialog가 참조하는 요소가 되므로 이 둘이 같은 경우에만 close 메소드를 사용한다.
      */
     const handleClickOutside = (event) => {
-      if (dialog.current && event.target === dialog.current) {
+      // 백드롭, 네, 아니오 버튼을 누를 시 모달 닫힘
+      if (
+        dialog.current &&
+        (event.target === dialog.current ||
+          event.target === acceptButton.current ||
+          event.target === denyButton.current)
+      ) {
         dialog.current.close();
       }
     };
@@ -27,15 +36,6 @@ const Modal = ({ children, ref, onProjectDelete }) => {
       }
     };
   }, []);
-
-  function handleAcceptClick() {
-    onProjectDelete();
-    dialog.current.close();
-  }
-
-  function handleDenyClick() {
-    dialog.current.close();
-  }
 
   useImperativeHandle(ref, () => ({
     open() {
@@ -52,13 +52,15 @@ const Modal = ({ children, ref, onProjectDelete }) => {
         {children}
         <menu className="flex items-center justify-end gap-4 my-4">
           <button
-            onClick={handleAcceptClick}
+            ref={acceptButton}
+            onClick={onAccept}
             className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
           >
             네
           </button>
           <button
-            onClick={handleDenyClick}
+            ref={denyButton}
+            onClick={onDeny}
             className="text-stone-600 hover:text-stone-950"
           >
             아니오

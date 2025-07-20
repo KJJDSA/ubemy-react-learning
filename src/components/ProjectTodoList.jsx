@@ -23,7 +23,7 @@ const ProjectTodoList = ({ project, onTaskSaveClick, onProjectDelete }) => {
 
   return (
     <div className="mt-24 w-2/3">
-      <Modal ref={deleteDialog} onProjectDelete={onProjectDelete}>
+      <Modal ref={deleteDialog} onAccept={onProjectDelete}>
         프로젝트를 삭제하시겠습니까?
       </Modal>
       <Header project={project} onDialogOpen={handleDialogOpen} />
