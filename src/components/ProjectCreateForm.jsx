@@ -18,7 +18,7 @@ function validation(copyInputData, copyValidateData) {
 
   for (let key in copyInputData) {
     // 빈 값이 존재한다면
-    if (copyInputData[key] === "") {
+    if (copyInputData[key].trim() === "") {
       copyValidateData[key] = false;
       isFine = false;
     } else {
