@@ -5,6 +5,7 @@ const CreateFormInput = ({
   onChangeKey,
   onChange,
   validation,
+  textArea,
   ...props
 }) => {
   const inputClassName = `w-full h-20 p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600${
@@ -18,14 +19,14 @@ const CreateFormInput = ({
         }`}
       >
         {children}
-        {type === "longText" && (
-          <input
+        {textArea && (
+          <textarea
             className={inputClassName}
             onChange={(event) => onChange(onChangeKey, event.target.value)}
             {...props}
           />
         )}
-        {type !== "longText" && (
+        {!textArea && (
           <input
             className={inputClassName}
             onChange={(event) => onChange(onChangeKey, event.target.value)}

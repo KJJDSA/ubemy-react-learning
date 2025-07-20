@@ -98,15 +98,17 @@ const ProjectCreateForm = ({ onCancel, onSave }) => {
         onChangeKey={"title"}
         onChange={handleChange}
         validation={validateData.title}
+        textArea={false}
       >
         제목
       </CreateFormInput>
       <CreateFormInput
-        type="longText"
+        type="text"
         value={inputData.discription}
         onChangeKey={"discription"}
         onChange={handleChange}
         validation={validateData.discription}
+        textArea={true}
       >
         설명
       </CreateFormInput>
@@ -116,6 +118,7 @@ const ProjectCreateForm = ({ onCancel, onSave }) => {
         onChangeKey={"dueDate"}
         onChange={handleChange}
         validation={validateData.dueDate}
+        textArea={false}
       >
         마감일
       </CreateFormInput>
