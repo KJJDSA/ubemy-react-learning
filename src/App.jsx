@@ -62,13 +62,22 @@ function App() {
     setSelectedProjectNumber((prev) => (prev === 0 ? null : prev - 1));
   }
 
-  let swichMode = "";
+  // return문 길이를 짧게 줄일 수 있다.
+  let content;
   if (isCreateFormOn) {
-    swichMode = "createForm";
+    content = (
+      <ProjectCreateForm onSave={handleProjectSave} onCancel={handleCancel} />
+    );
   } else if (projectList.length > 0) {
-    swichMode = "showProject";
+    content = (
+      <ProjectTodoList
+        project={projectList[selectedProjectNumber ?? 0]}
+        onTaskSaveClick={handleTaskSaveClick} // tesk 추가, 삭제
+        onProjectDelete={handleProjectDelete}
+      />
+    );
   } else {
-    swichMode = "noProject";
+    content = <NoProjectSelected onSwich={handleSwich} />;
   }
 
   console.log(selectedProjectNumber);
@@ -81,25 +90,7 @@ function App() {
           onSwich={handleSwich}
           currentIndex={selectedProjectNumber}
         />
-
-        {swichMode === "createForm" && (
-          <ProjectCreateForm
-            onSave={handleProjectSave}
-            onCancel={handleCancel}
-          />
-        )}
-
-        {swichMode === "showProject" && (
-          <ProjectTodoList
-            project={projectList[selectedProjectNumber ?? 0]}
-            onTaskSaveClick={handleTaskSaveClick} // tesk 추가, 삭제
-            onProjectDelete={handleProjectDelete}
-          />
-        )}
-
-        {swichMode === "noProject" && (
-          <NoProjectSelected onSwich={handleSwich} />
-        )}
+        {content}
       </main>
     </>
   );
