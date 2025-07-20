@@ -28,9 +28,14 @@ const Modal = ({ children, ref, onProjectDelete }) => {
     };
   }, []);
 
-  const handleCloseDialog = () => {
+  function handleAcceptClick() {
+    onProjectDelete();
     dialog.current.close();
-  };
+  }
+
+  function handleDenyClick() {
+    dialog.current.close();
+  }
 
   useImperativeHandle(ref, () => ({
     open() {
@@ -47,13 +52,13 @@ const Modal = ({ children, ref, onProjectDelete }) => {
         {children}
         <menu className="flex items-center justify-end gap-4 my-4">
           <button
-            onClick={onProjectDelete}
+            onClick={handleAcceptClick}
             className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
           >
             네
           </button>
           <button
-            onClick={handleCloseDialog}
+            onClick={handleDenyClick}
             className="text-stone-600 hover:text-stone-950"
           >
             아니오
