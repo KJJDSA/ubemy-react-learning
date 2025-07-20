@@ -13,10 +13,12 @@ function createInitialedProject(data) {
 
 function App() {
   /** ⭐️ 프로젝트 인식을 number 이 아닌 id 를 꼭! 사용해야하는 이유 ⭐️ : 
-   * 1. 리스트 관리의 용이성: id 가 있다면 filter 등을 통해 index 없이도 배열을 삭제할 수 있다. 사이드이펙트 없이 동시 삭제, 순차삭제가 가능하다.
-   * 2. 순서가 바뀌어도 유지되는 고유성: 정렬 순서를 바꾸거나 중간에 요소를 삭제하여도 id 를 통해 필요한 요소에 바로 접근할 수 있다.
-   * 3. 가장 직관적이고 고유한 key 지정: 리액트의 성능 최적화 및 불필요한 리렌더링 방지를 위해 key 는 고유한 값을 사용해야 하는데, 이때 id가 존재한다면 가장 직관적이고 중복되지 않는 key를 사용할 수 있음
-   * 4. 유지보수성: 예측 가능하고 안정적인 식별요소는 유지보수성을 높인다. 식별요소로 index를 사용하는 것은 데이터변경에 취약하다.
+   * 1. id를 사용해 filter를 사용할 수 있게 된다. index를 통해 splice 혹은 filter 하는 것 보다 더욱 정확하다.
+   * 2. 정렬 순서를 바꾸거나 중간에 요소를 삭제하여도 id 를 통해 필요한 요소에 바로 접근할 수 있다. 또한 동적인 배열의 변경에도 강하다.
+   * 3. index 를 조합해 key를 만드는 대신 id 를 사용하면 리스트 요소를 리액트가 재사용할 수 있다.(최적화)
+   * 4. 예측 가능하고 안정적인 식별요소는 개발 및 유지보수성을 높인다.
+   * 
+   * TODO id 를 속성에 추가하고 index 를 사용하는 부분을 교체해보기
    */
   const [selectedProjectNumber, setSelectedProjectNumber] = useState(null); // 선택된 프로젝트의 넘버
   const [isCreateFormOn, setIsCreateFormOn] = useState(false);
