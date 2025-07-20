@@ -8,6 +8,9 @@ const CreateFormInput = ({
   onChange,
   validation,
 }) => {
+  const inputClassName = `w-full h-20 p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600${
+    !validation && " border-red-300 bg-red-200"
+  }`;
   return (
     <div className="mt-5">
       <label
@@ -18,9 +21,7 @@ const CreateFormInput = ({
         {children}
         {type === "longText" && (
           <input
-            className={`w-full h-20 p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600${
-              !validation && " border-red-300 bg-red-200"
-            }`}
+            className={inputClassName}
             type={type}
             value={value}
             onChange={(event) => onChange(onChangeKey, event.target.value)}
@@ -28,9 +29,7 @@ const CreateFormInput = ({
         )}
         {type !== "longText" && (
           <input
-            className={`w-full h-20 p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600${
-              !validation && " border-red-300 bg-red-200"
-            }`}
+            className={inputClassName}
             type={type}
             value={value}
             onChange={(event) => onChange(onChangeKey, event.target.value)}
