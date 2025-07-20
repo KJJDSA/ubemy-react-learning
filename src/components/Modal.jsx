@@ -9,10 +9,11 @@ const Modal = ({ children, ref, onAccept = undefined, onDeny = undefined }) => {
   useEffect(() => {
     /**
      * 클릭 이벤트를 통해 event.target 으로 외부와 내부를 알 수 있다.
-     * 백드롭을 클릭할 경우: 백드롭은 dialog 자체에서 발생한 것으로 간주되어 버블링 시작접이 dialog 로 지정된다.
+     * 백드롭을 클릭할 경우: 백드롭은 dialog 자체에서 발생한 것으로 간주되어 버블링 시작점이 dialog 로 지정된다.
      * menu 를 클릭한 경우: 버블링 시작점이 menu 로 지정된다.
-     *  버블링 특성상 dialog 에 이벤트가 닿지만, 분기를 통해 버블링의 시작점(event.target) 은 dialog가 아닌 그 안쪽 요소가 된다.
-     * 즉 백드롭을 클릭했을 때만 event.target이 dialog가 참조하는 요소가 되므로 이 둘이 같은 경우에만 close 메소드를 사용한다.
+     * button 을 클릭한 경우: 버블링 시작점이 button 으로 지정된다.
+     * 
+     * 즉 클릭했을 때 버블링의 시작점(event.target)이 dialog.current와 button.current 인 경우만 다이얼로그를 닫게하면 된다.
      */
     const handleClickOutside = (event) => {
       // 백드롭, 네, 아니오 버튼을 누를 시 모달 닫힘
