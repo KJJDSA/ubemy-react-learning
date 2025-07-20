@@ -14,36 +14,49 @@ export default function Cart({ onUpdateItemQuantity }) {
   const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
 
   return (
-    <div id="cart">
-      {items.length === 0 && <p>No items in cart!</p>}
-      {items.length > 0 && (
-        <ul id="cart-items">
-          {items.map((item) => {
-            const formattedPrice = `$${item.price.toFixed(2)}`;
+    /* 이전 구식 리액트에서 컨텍스트를 활용했던 방법 중 하나(참고만 하기) */
+    <CartContext.Consumer>
+      {(CartCtx) => {
+        // Consumer 프로퍼티를 붙이고 아래 {}와 실행함수를 만들어주면, 매개변수로 바인딩된 컨텍스트 값이 들어감
+        const CartCtxItems = CartCtx.items;
+        return (
+          <div id="cart">
+            {CartCtxItems.length === 0 && <p>No items in cart!</p>}
+            {CartCtxItems.length > 0 && (
+              <ul id="cart-items">
+                {CartCtxItems.map((item) => {
+                  const formattedPrice = `$${item.price.toFixed(2)}`;
 
-            return (
-              <li key={item.id}>
-                <div>
-                  <span>{item.name}</span>
-                  <span> ({formattedPrice})</span>
-                </div>
-                <div className="cart-item-actions">
-                  <button onClick={() => onUpdateItemQuantity(item.id, -1)}>
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => onUpdateItemQuantity(item.id, 1)}>
-                    +
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      <p id="cart-total-price">
-        Cart Total: <strong>{formattedTotalPrice}</strong>
-      </p>
-    </div>
+                  return (
+                    <li key={item.id}>
+                      <div>
+                        <span>{item.name}</span>
+                        <span> ({formattedPrice})</span>
+                      </div>
+                      <div className="cart-item-actions">
+                        <button
+                          onClick={() => onUpdateItemQuantity(item.id, -1)}
+                        >
+                          -
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          onClick={() => onUpdateItemQuantity(item.id, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <p id="cart-total-price">
+              Cart Total: <strong>{formattedTotalPrice}</strong>
+            </p>
+          </div>
+        );
+      }}
+    </CartContext.Consumer>
   );
 }
