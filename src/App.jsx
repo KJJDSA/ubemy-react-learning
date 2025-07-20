@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Header from "./components/Header.jsx";
 import Shop from "./components/Shop.jsx";
+import Product from "./components/Product.jsx";
 import { DUMMY_PRODUCTS } from "./dummy-products.js";
 
 function App() {
@@ -71,7 +72,20 @@ function App() {
         cart={shoppingCart}
         onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
       />
-      <Shop onAddItemToCart={handleAddItemToCart} />
+      <Shop>
+        {/** ⭐️ 컴포넌트 합성 
+         * App -> Shop -> Product 로 이어지는 drilling 중 하나를 제거했다. 
+         * Product에서 drilling 되는 부분을 App으로 끌고 와 chilren 에서 미리 정의한다. 
+         * 
+         * 장점: 빠르게 적은 단계의 drilling 을 해소할 수 있다.
+         * 단점: 끌어올리는 부모 컴포넌트(App)가 비대해진다. 끌어올리는 요소가 복잡할수록 수행하기 어렵다. 
+        */}
+        {DUMMY_PRODUCTS.map((product) => (
+          <li key={product.id}>
+            <Product {...product} onAddToCart={handleAddItemToCart} />
+          </li>
+        ))}
+      </Shop>
     </>
   );
 }
