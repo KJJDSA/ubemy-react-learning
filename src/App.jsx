@@ -68,6 +68,13 @@ function App() {
     });
   }
 
+  const CartCtx = {
+    // State의 일부만 바인딩 할 수 있다.
+    items: shoppingCart.items,
+    // 핸들함수도 명시로 바인딩 가능
+    addItemToCart: handleAddItemToCart,
+  };
+
   return (
     <>
       {/* 18버전 이하는 <CartContext.provider> */}
@@ -76,7 +83,7 @@ function App() {
        * drilling 으로 가장 아래의 컴포넌트까지 전달할 필요 없이 CartContext 내부라면 컨텍스트 값을 얼마든지 사용할 수 있다.
        * 관행으로 context 파일을 저장하는 디렉토리는 store로 하지만 강제성은 없다.
        */}
-      <CartContext value={{ items: [/* ⛔️ 항상 value 속성을 추가해 줘야 한다. */] }} >
+      <CartContext value={CartCtx /* 기본값: 필수 */}>
         <Header
           cart={shoppingCart}
           onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
