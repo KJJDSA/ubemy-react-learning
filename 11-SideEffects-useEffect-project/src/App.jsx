@@ -15,11 +15,11 @@ const storedPlaces = storedIds.map((id) =>
   AVAILABLE_PLACES.find((place) => place.id === id)
 );
 function App() {
-
   const modal = useRef();
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
   const [availablePlace, setAvailablePlace] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   /* ⭐️ useEffect 를 사용하면 컴포넌트의 함수가 모두 끝난 뒤에 실행될 수 있도록 할 수 있다. 
   두번째 파라미터에 적힌 조건에 맞으면 재실행 되는데, 빈 배열을 놓을 경우 조건이 없어 앱이 실행되고 한번만 실행될 수 있도록 할 수 있다. */
@@ -35,12 +35,14 @@ function App() {
     });
   }, []);
   function handleStartRemovePlace(id) {
-    modal.current.open();
+    /* modal.current.open(); */
+    setModalIsOpen(true);
     selectedPlace.current = id;
   }
 
   function handleStopRemovePlace() {
-    modal.current.close();
+    /* modal.current.close(); */
+    setModalIsOpen(false);
   }
 
   function handleSelectPlace(id) {
@@ -70,7 +72,7 @@ function App() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    modal.current.close();
+    setModalIsOpen(false);
 
     const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
     localStorage.setItem(
@@ -81,7 +83,7 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal}>
+      <Modal /*  ref={modal} */ open={modalIsOpen}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
