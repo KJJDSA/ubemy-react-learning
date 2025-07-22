@@ -16,7 +16,6 @@ const Modal = function Modal({ children, open }) {
   //   };
   // });
 
-
   /* 
   ☝️ 기존에 알던 방식: useImperativeHandle 과 useRef를 통해 부모가 자식을 간접 조작한다. 
   💁 리액트는 선언적 프로그래밍을 하는데, 이에 맞게 변경할 수는 없을까? 
@@ -33,7 +32,12 @@ const Modal = function Modal({ children, open }) {
         dialog.current.close();
       }
     },
-    /* useEffect 가 컴포넌트 함수가 끝나면(재렌더링 타이밍이 되면) 항상 실행되도록 해야하기 때문에 종속성을 넣어주는거다. */
+    /* 
+    App.jsx의 navigator, localStorage 의 예시는 종속성을 넣지 않았는데, 이는 이 둘이 실행되기 위해 UI 변경을 위한 jsx 코드 요소를 필요로 하지 않기 때문이다.(state, context value, props..)
+    
+    하지만 이번 모달의 경우에는 open 이 변경될 때 마다 useEffect가 실행되야 하며, 코드에도 해당 prop이 들어가있다. 
+    useEffect 가 트리거되는데에 open 을 의존하기 때문에, 종속성에 open 을 넣는 것! 🤝
+    */
     [open]
   );
 
