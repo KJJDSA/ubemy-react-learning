@@ -7,10 +7,18 @@ import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import logoImg from "./assets/logo.png";
 import { sortPlacesByDistance } from "./loc.js";
 
+/* 첫 로딩 떄 단 한번만 불러오면 되기 때문에 useEffect를 사용 고려할 수도 있지만, 
+localStorage는 navigator 와 다르게 즉발성이므로 굳이 사용할 필요 없으며, 또 APP 안에다 사용할 이유도 없다. 
+*/
+const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+const storedPlaces = storedIds.map((id) =>
+  AVAILABLE_PLACES.find((place) => place.id === id)
+);
 function App() {
+
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
   const [availablePlace, setAvailablePlace] = useState([]);
 
   /* ⭐️ useEffect 를 사용하면 컴포넌트의 함수가 모두 끝난 뒤에 실행될 수 있도록 할 수 있다. 
@@ -43,6 +51,19 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+
+    /* 
+    1. 그냥 사용해도 무한루프에 걸리지 않을 경우
+    2. 앱 실행 후 한번만 실행될 필요가 없는 경우
+    라면 사이드이펙트 일지라도 UseEffect를 꼭 사용하지 않아도 된다. 
+    */
+    const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+    if (storedIds.indexOf(id) === -1) {
+      localStorage.setItem(
+        "selectedPlaces",
+        JSON.stringify([id, ...storedIds])
+      );
+    }
   }
 
   function handleRemovePlace() {
@@ -50,6 +71,12 @@ function App() {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     modal.current.close();
+
+    const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+    localStorage.setItem(
+      "selectedPlaces",
+      JSON.stringify(storedIds.filter((x) => x !== selectedPlace.current))
+    );
   }
 
   return (
