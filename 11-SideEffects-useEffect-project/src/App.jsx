@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import Places from "./components/Places.jsx";
 import { AVAILABLE_PLACES } from "./data.js";
@@ -11,22 +11,21 @@ function App() {
   const modal = useRef();
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState([]);
-  const [sortedPlace, setSoltedPlace] = useState([])
+  const [availablePlace, setAvailablePlace] = useState([]);
 
-  navigator.geolocation.getCurrentPosition((position) => {
-    const sortedPlaces = sortPlacesByDistance(
-      AVAILABLE_PLACES,
-      position.coords.latitude,
-      position.coords.longitude
-    );
+  /* ⭐️ useEffect 를 사용하면 컴포넌트의 함수가 모두 끝난 뒤에 실행될 수 있도록 할 수 있다. 
+  두번째 파라미터에 적힌 조건에 맞으면 재실행 되는데, 빈 배열을 놓을 경우 조건이 없어 앱이 실행되고 한번만 실행될 수 있도록 할 수 있다. */
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlaces = sortPlacesByDistance(
+        AVAILABLE_PLACES,
+        position.coords.latitude,
+        position.coords.longitude
+      );
 
-    setSoltedPlace(sortedPlaces)
-    /* 
-    네비게이터는 컴포넌트가 실행될 때 마다 위치를 구해서 state를 업데이트하고, state는 업데이트 될 때 마다 컴포넌트를 재실행한다.
-    트리거 될 때는 그리되지 않았으나 아무런 보호장치 없이는 충분히 무한루프의 가능성이 있다.
-    */
-  });
-
+      setAvailablePlace(sortedPlaces);
+    });
+  }, []);
   function handleStartRemovePlace(id) {
     modal.current.open();
     selectedPlace.current = id;
@@ -79,7 +78,8 @@ function App() {
         />
         <Places
           title="Available Places"
-          places={AVAILABLE_PLACES}
+          places={availablePlace}
+          fallbackText={"사용자 위치를 기반으로 장소를 정렬하고 있어요"}
           onSelectPlace={handleSelectPlace}
         />
       </main>
