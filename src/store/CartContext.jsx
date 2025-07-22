@@ -6,4 +6,5 @@ export const CartContext = createContext({
   items: [],
   // 부모 컴포넌트의 핸들러 함수도 바인딩해서 쓸 수 있음. 명시해두면 자동완성됨
   addItemToCart: () => {},
+  updateItemQuantity: () => {},
 });

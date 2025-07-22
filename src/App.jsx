@@ -73,6 +73,7 @@ function App() {
     items: shoppingCart.items,
     // 핸들함수도 명시로 바인딩 가능
     addItemToCart: handleAddItemToCart,
+    updateItemQuantity: handleUpdateCartItemQuantity,
   };
 
   return (
@@ -85,8 +86,10 @@ function App() {
        */}
       <CartContext value={CartCtx /* 기본값: 필수 */}>
         <Header
-          cart={shoppingCart}
-          onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
+          cartQuantity={
+            /* drilling 을 위해 cart 자체를 보낼 필요가 없으므로 length만 보낸다. */
+            shoppingCart.items.length
+          }
         />
         <Shop>
           {/** ⭐️ 컴포넌트 합성

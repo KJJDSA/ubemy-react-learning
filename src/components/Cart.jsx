@@ -1,9 +1,9 @@
 import { use, useContext } from "react";
 import { CartContext } from "../store/CartContext";
 
-export default function Cart({ onUpdateItemQuantity }) {
+export default function Cart() {
   // context 를 가져오는 방법 2가지
-  const { items } = useContext(CartContext);
+  const { items, updateItemQuantity } = useContext(CartContext);
   // use 는 리액트 19이상부터 사용 가능하며 코드블록 내부에서도 사용이 가능하다(if, for 등등)
   // const {items} = use(CartContext)
 
@@ -34,15 +34,11 @@ export default function Cart({ onUpdateItemQuantity }) {
                         <span> ({formattedPrice})</span>
                       </div>
                       <div className="cart-item-actions">
-                        <button
-                          onClick={() => onUpdateItemQuantity(item.id, -1)}
-                        >
+                        <button onClick={() => updateItemQuantity(item.id, -1)}>
                           -
                         </button>
                         <span>{item.quantity}</span>
-                        <button
-                          onClick={() => onUpdateItemQuantity(item.id, 1)}
-                        >
+                        <button onClick={() => updateItemQuantity(item.id, 1)}>
                           +
                         </button>
                       </div>
