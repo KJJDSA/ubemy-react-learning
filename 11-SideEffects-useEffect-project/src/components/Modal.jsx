@@ -2,7 +2,7 @@ import { useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 
 // const Modal = forwardRef(function Modal({ children }, ref) {
-const Modal = function Modal({ children, open }) {
+const Modal = function Modal({ children, open, onClose }) {
   const dialog = useRef();
 
   // useImperativeHandle(ref, () => {
@@ -42,7 +42,12 @@ const Modal = function Modal({ children, open }) {
   );
 
   return createPortal(
-    <dialog className="modal" ref={dialog}>
+    <dialog
+      className="modal"
+      ref={dialog}
+      /* esc 등을 사용해서 닫으면 props 에 반영이 되지 않으므로 onClose 로 닫힐 때 이벤트를 받아 처리할 수 있도록 한다. */
+      onClose={onClose}
+    >
       {children}
     </dialog>,
     document.getElementById("modal")
