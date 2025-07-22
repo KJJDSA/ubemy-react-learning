@@ -4,78 +4,9 @@ import Header from "./components/Header.jsx";
 import Shop from "./components/Shop.jsx";
 import Product from "./components/Product.jsx";
 
-import { CartContext } from "./store/CartContext.jsx";
-import { DUMMY_PRODUCTS } from "./dummy-products.js";
+import CartContextProvider from "./store/CartContext.jsx";
 
 function App() {
-  const [shoppingCart, setShoppingCart] = useState({
-    items: [],
-  });
-
-  function handleAddItemToCart(id) {
-    setShoppingCart((prevShoppingCart) => {
-      const updatedItems = [...prevShoppingCart.items];
-
-      const existingCartItemIndex = updatedItems.findIndex(
-        (cartItem) => cartItem.id === id
-      );
-      const existingCartItem = updatedItems[existingCartItemIndex];
-
-      if (existingCartItem) {
-        const updatedItem = {
-          ...existingCartItem,
-          quantity: existingCartItem.quantity + 1,
-        };
-        updatedItems[existingCartItemIndex] = updatedItem;
-      } else {
-        const product = DUMMY_PRODUCTS.find((product) => product.id === id);
-        updatedItems.push({
-          id: id,
-          name: product.title,
-          price: product.price,
-          quantity: 1,
-        });
-      }
-
-      return {
-        items: updatedItems,
-      };
-    });
-  }
-
-  function handleUpdateCartItemQuantity(productId, amount) {
-    setShoppingCart((prevShoppingCart) => {
-      const updatedItems = [...prevShoppingCart.items];
-      const updatedItemIndex = updatedItems.findIndex(
-        (item) => item.id === productId
-      );
-
-      const updatedItem = {
-        ...updatedItems[updatedItemIndex],
-      };
-
-      updatedItem.quantity += amount;
-
-      if (updatedItem.quantity <= 0) {
-        updatedItems.splice(updatedItemIndex, 1);
-      } else {
-        updatedItems[updatedItemIndex] = updatedItem;
-      }
-
-      return {
-        items: updatedItems,
-      };
-    });
-  }
-
-  const CartCtx = {
-    // State의 일부만 바인딩 할 수 있다.
-    items: shoppingCart.items,
-    // 핸들함수도 명시로 바인딩 가능
-    addItemToCart: handleAddItemToCart,
-    updateItemQuantity: handleUpdateCartItemQuantity,
-  };
-
   return (
     <>
       {/* 18버전 이하는 <CartContext.provider> */}
@@ -84,7 +15,10 @@ function App() {
        * drilling 으로 가장 아래의 컴포넌트까지 전달할 필요 없이 CartContext 내부라면 컨텍스트 값을 얼마든지 사용할 수 있다.
        * 관행으로 context 파일을 저장하는 디렉토리는 store로 하지만 강제성은 없다.
        */}
-      <CartContext value={CartCtx /* 기본값: 필수 */}>
+
+      {/* !!! CartContextProvider에 state 및 handle 함수를 모두 넣고 context에서 제공하도록 했다. */}
+      {/* 하지만 context에서 제공한 state를 식별하지 못한다.  */}
+      <CartContextProvider>
         <Header
           cartQuantity={
             /* drilling 을 위해 cart 자체를 보낼 필요가 없으므로 length만 보낸다. */
@@ -105,7 +39,7 @@ function App() {
             </li>
           ))}
         </Shop>
-      </CartContext>
+      </CartContextProvider>
     </>
   );
 }
