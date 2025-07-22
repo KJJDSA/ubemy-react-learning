@@ -88,10 +88,13 @@ function App() {
         open={modalIsOpen}
         onClose={handleStopRemovePlace}
       >
-        <DeleteConfirmation
-          onCancel={handleStopRemovePlace}
-          onConfirm={handleRemovePlace}
-        />
+        {/* 타이머를 안에 심어놨을 때 가장 확실하게 제어하는 방법은 컴포넌트를 지웠다 생성하는것이다. */}
+        {modalIsOpen && (
+          <DeleteConfirmation
+            onCancel={handleStopRemovePlace}
+            onConfirm={handleRemovePlace}
+          />
+        )}
       </Modal>
 
       <header>
