@@ -10,7 +10,7 @@ export const CartContext = createContext({
   updateItemQuantity: () => {},
 });
 
-export default function CartContextProvider() {
+export default function CartContextProvider({ children }) {
   const [shoppingCart, setShoppingCart] = useState({
     items: [],
   });
@@ -79,5 +79,7 @@ export default function CartContextProvider() {
     updateItemQuantity: handleUpdateCartItemQuantity,
   };
 
-  return <CartContext.Provider value={CartCtx}></CartContext.Provider>;
+  return (
+    <CartContext.Provider value={CartCtx}>{children}</CartContext.Provider>
+  );
 }
