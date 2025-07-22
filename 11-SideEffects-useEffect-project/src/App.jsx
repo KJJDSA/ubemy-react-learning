@@ -5,11 +5,27 @@ import { AVAILABLE_PLACES } from "./data.js";
 import Modal from "./components/Modal.jsx";
 import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import logoImg from "./assets/logo.png";
+import { sortPlacesByDistance } from "./loc.js";
 
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [sortedPlace, setSoltedPlace] = useState([])
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    const sortedPlaces = sortPlacesByDistance(
+      AVAILABLE_PLACES,
+      position.coords.latitude,
+      position.coords.longitude
+    );
+
+    setSoltedPlace(sortedPlaces)
+    /* 
+    네비게이터는 컴포넌트가 실행될 때 마다 위치를 구해서 state를 업데이트하고, state는 업데이트 될 때 마다 컴포넌트를 재실행한다.
+    트리거 될 때는 그리되지 않았으나 아무런 보호장치 없이는 충분히 무한루프의 가능성이 있다.
+    */
+  });
 
   function handleStartRemovePlace(id) {
     modal.current.open();
