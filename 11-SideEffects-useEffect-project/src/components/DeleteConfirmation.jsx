@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 
+function clearRefInterval(ref) {
+  console.log("clear!");
+  clearInterval(ref);
+}
+
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
   const limitSecond = 3000;
   const [timeReduce, setTimeReduce] = useState(limitSecond);
@@ -16,6 +21,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       if (timeReduce === limitSecond) {
         console.log("set!");
         timeRemain.current = setInterval(() => {
+          console.log("실행중..." + timeReduce);
           setTimeReduce((prev) => prev - 1000);
         }, 1000);
       }
@@ -35,8 +41,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       */
       return () => {
         if (timeReduce <= 0) {
-          console.log("clear!");
-          clearTimeout(timeRemain);
+          clearRefInterval(timeRemain.current);
         }
       };
     },
@@ -60,15 +65,28 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
     ]
   );
 
+  function handleConfirm() {
+    if (timeRemain.current !== undefined) {
+      onConfirm();
+      clearRefInterval(timeRemain.current);
+    }
+  }
+
+  function handleCancel() {
+    if (timeRemain.current !== undefined) {
+      onCancel();
+      clearRefInterval(timeRemain.current);
+    }
+  }
   return (
     <div id="delete-confirmation">
       <h2>Are you sure?</h2>
       <p>Do you really want to remove this place?</p>
       <div id="confirmation-actions">
-        <button onClick={onCancel} className="button-text">
+        <button onClick={handleCancel} className="button-text">
           No
         </button>
-        <button onClick={onConfirm} className="button">
+        <button onClick={handleConfirm} className="button">
           Yes
         </button>
       </div>
