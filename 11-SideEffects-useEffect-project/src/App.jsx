@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 import Places from "./components/Places.jsx";
 import { AVAILABLE_PLACES } from "./data.js";
@@ -68,18 +68,34 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
-    setPickedPlaces((prevPickedPlaces) =>
-      prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
-    );
-    setModalIsOpen(false);
+  const handleRemovePlace = useCallback(
+    /* ⭐️ useCallback 
+    handleRemovePlace 가 재렌더링 될 때 마다 자식 컴포넌트의 useEffect가 재실행되는 문제가 발생. 
+    이를 해결하고 싶다면 handleRemovePlace 이 재렌더링 될 때 마다 삭제되지 않으면 된다. 
+    useCallback 은 리액트 기본 내장 훅이며, 이것으로 감싼 함수는 재렌더링에도 새로 인스턴스를 생성하지 않고 기존 인스턴스를 사용하게 된다.
+    인스턴스의 메모리주소가 바뀌지 않으므로(참조값이 매번 바뀌지 않으므로) useEffect에서 무한루프를 걱정하지 않고 의존성에 해당함수를 넣을 수 있다.
+    */
+    function handleRemovePlace() {
+      setPickedPlaces((prevPickedPlaces) =>
+        prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
+      );
+      setModalIsOpen(false);
 
-    const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
-    localStorage.setItem(
-      "selectedPlaces",
-      JSON.stringify(storedIds.filter((x) => x !== selectedPlace.current))
-    );
-  }
+      const storedIds =
+        JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+      localStorage.setItem(
+        "selectedPlaces",
+        JSON.stringify(storedIds.filter((x) => x !== selectedPlace.current))
+      );
+    },
+    /* 
+    의존성을 넣는 곳. 
+    useEffect와 다르게 함수 대신 직접 사용된 props, state, context value 만 추가하고 그 외는 추가하지 않는다. 
+    useCallback 은 인스턴스가 삭제되고 새로 생성되는것을 막는만큼, 그 안의 함수는 업데이트된 state 등을 최신으로 유지할 수 없다. 
+    때문에 의존성으로 묶어 useCallback이 인스턴스의 값을 직접 업데이트 하는 것.()
+    */
+    []
+  );
 
   return (
     <>
