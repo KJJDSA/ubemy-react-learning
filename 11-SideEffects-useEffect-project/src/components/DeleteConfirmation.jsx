@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import ProgressBar from "./ProgressBar";
 
 function clearRefInterval(ref) {
   console.log("clear!");
@@ -29,9 +30,11 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       if (timeReduce === limitSecond) {
         console.log("set!");
         timeRemain.current = setInterval(() => {
-          console.log("실행중..." + timeReduce);
-          setTimeReduce((prev) => prev - 10);
-        }, 10);
+          setTimeReduce((prev) => {
+            console.log("실행중..." + prev);
+            return prev - 1000;
+          }); // 10 밀리초마다 실행하면 부하가 심해진다.
+        }, 1000);
       }
 
       // clean up함수에 넣으면 3초가 지난 뒤에도 꺼지지 않으므로 이곳에 넣는다.
@@ -98,8 +101,8 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
           Yes
         </button>
       </div>
-      {/* <h3>{timeReduce / 1000} 초 후 자동으로 삭제됩니다..</h3> */}
-      <progress value={timeReduce} max={limitSecond} />
+      <h3>{timeReduce / 1000} 초 후 자동으로 삭제됩니다..</h3>
+      <ProgressBar timer={limitSecond} />
     </div>
   );
 }
