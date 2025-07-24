@@ -11,6 +11,14 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
 
   const timeRemain = useRef();
 
+  /* 
+  useEffect를 두개 만들어도 됨. 
+  하나는 의존성 있는(onConfirm 등이 있는) 실제 삭제 요청용 useEffect
+  하나는 의존성 없는 progress 보여주기 용 useEffect
+
+  둘 다 하나의 useEffect로 만들면 신경써야할게 많아지고 복잡해지지만 분리하면 각각의 역할만 집중하면 되니 훨씬 개발하기 편하고 안정적임
+  실제 삭제 요청을 할 때는 setTimeout을 사용할 수도 있게 됨.
+  */
   useEffect(
     () => {
       // const timer = setTimeout(() => {
@@ -22,8 +30,8 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
         console.log("set!");
         timeRemain.current = setInterval(() => {
           console.log("실행중..." + timeReduce);
-          setTimeReduce((prev) => prev - 1000);
-        }, 1000);
+          setTimeReduce((prev) => prev - 10);
+        }, 10);
       }
 
       // clean up함수에 넣으면 3초가 지난 뒤에도 꺼지지 않으므로 이곳에 넣는다.
@@ -90,7 +98,8 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
           Yes
         </button>
       </div>
-      <h3>{timeReduce / 1000} 초 후 자동으로 삭제됩니다..</h3>
+      {/* <h3>{timeReduce / 1000} 초 후 자동으로 삭제됩니다..</h3> */}
+      <progress value={timeReduce} max={limitSecond} />
     </div>
   );
 }
