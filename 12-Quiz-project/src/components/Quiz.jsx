@@ -1,5 +1,6 @@
 import { useState } from "react";
 import QUESTIONS from "../questions.js";
+import QuizOverImage from "../assets/quiz-complete.png";
 
 const Quiz = () => {
   const [userAnswers, setUserAnswers] = useState([]);
@@ -19,7 +20,21 @@ const Quiz = () => {
     - state를 최소한으로 유지하면서 서버원본과 같은 데이터를 사용해 일관성을 보장하고, 각각의 데이터가 가지는 역할에 맞게 분리해서 사용할 수 있다. 
     - 질문이 입력될 때 answer 1차원 배열에 추가만 되므로 낮은 성능부하를 가진다. 
   */
+  const answerIsOver = userAnswers.length === QUESTIONS.length;
+
+  if (answerIsOver) {
+    return (
+      <div id="summary">
+        <img src={QuizOverImage} alt="Quiz Over Trophy" />
+        <h2>Quiz Over!</h2>
+      </div>
+    );
+  }
+
+  // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
   const activeQuestionIndex = userAnswers.length;
+  const suffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
+  suffledAnswers.sort(() => Math.random() - 0.5);
 
   function handleSelectAnswer(answer) {
     setUserAnswers((prev) => [...prev, answer]);
@@ -31,7 +46,7 @@ const Quiz = () => {
       <div id="questions">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <div id="answers">
-          {QUESTIONS[activeQuestionIndex].answers.map((answer) => {
+          {suffledAnswers.map((answer) => {
             return (
               <li key={answer} className="answer">
                 <button onClick={() => handleSelectAnswer(answer)}>
