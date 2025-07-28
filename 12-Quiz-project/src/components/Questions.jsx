@@ -16,13 +16,19 @@ const Questions = ({ index, onSelectAnswer }) => {
     isCorrect: null,
   });
 
+  /* 타이머가 거의 다 닳았을 때 선택하면 null 로 입력되는 문제 수정 */
+  let timer = 10;
+  if (answer.selectedAnswer !== "") {
+    timer = 2;
+  }
+
   const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
     setAnswer((prev) => ({
       ...prev,
       selectedAnswer: answer,
     }));
 
-    if (answer === null) {
+    if (answer === null && timer === 10) {
       /* 아무것도 선택하지 않았을 경우 바로 초기화 */
       onSelectAnswer(answer);
     } else {
@@ -45,13 +51,14 @@ const Questions = ({ index, onSelectAnswer }) => {
   결과적으로 useEffect가 Quiz의 재생성마다 재실행되는 문제가 그대로 발생한다.  
   때문에 명시적으로 이를 추가할 수 있도록 handleSelectNothing 를 따로 정의하여 넣는 번거로움이 필요한 것이다.
   */
-  const handleSelectNothing = useCallback(() => handleSelectAnswer(null), []);
+  const handleSelectNothing = useCallback(() => handleSelectAnswer(null), [handleSelectAnswer]);
+
   return (
-    <div id="questions">
+    <div id="question">
       <QuestionTimer
         /* (피드백 3-4) key 를 사용해서 명확하게 state 변경을 감지해 타이머를 초기화한다 */
-        key={QUESTIONS[index].text}
-        timeoutSecond={10}
+        key={timer}
+        timeoutSecond={timer}
         /* 
           💁 (피드백 3-1)강의에서는 타이머 구현에 완전히 다른 방법(useCallback 사용, key를 써서 타이머 초기화) 을 사용했는데 이유를 몰랐다. 왜 그럤을까?
 
@@ -61,6 +68,7 @@ const Questions = ({ index, onSelectAnswer }) => {
           - ⛔️ onTimeout 함수 에는 useCallback 을 걸고 타이머가 onTimeout 이 아닌 다른 변경사항을 기준으로 삼을 수 있도록 수정해야 한다! 
           */
         onTimeout={handleSelectNothing}
+        mode={answer.selectedAnswer !== "" ? "answered" : ""}
       ></QuestionTimer>
       <h2>{QUESTIONS[index].text}</h2>
       <Answers
