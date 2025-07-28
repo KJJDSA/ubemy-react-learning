@@ -23,6 +23,12 @@ const QuestionTimer = ({ timeoutSecond, onTimeout }) => {
     () => {
       const timeoutTimer = setTimeout(() => {
         onTimeout(null);
+        
+        /* 
+        문제가 끝나고 타이머가 다 줄어든 후에도 이 remainingTime의 값은 계속 유지된다. 
+        remainingTime 을 초기화 해주어야 한다. 
+        */
+        setRemainingTime(timeout);
       }, timeout);
 
       return () => {
