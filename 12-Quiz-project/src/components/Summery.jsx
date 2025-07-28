@@ -23,31 +23,39 @@ const Summery = ({ userAnswers }) => {
       <h2>Quiz Completed!!</h2>
       <div id="summary-stats">
         <p>
-          <span className="number">{`${Math.round(
-            (skippedCount / QUESTIONS.length) * 100
-          )}%`}</span>
+          <span className="number">
+            {Math.round((skippedCount / userAnswers.length) * 100)}%
+          </span>
           <span className="text">skipped</span>
         </p>
         <p>
-          <span className="number">{`${Math.round(
-            (correctlyCount / QUESTIONS.length) * 100
-          )}%`}</span>
+          <span className="number">
+            {Math.round((correctlyCount / userAnswers.length) * 100)}%
+          </span>
           <span className="text">answered correctly</span>
         </p>
         <p>
-          <span className="number">{`${Math.round(
-            (incorrectlyCount / QUESTIONS.length) * 100
-          )}%`}</span>
+          <span className="number">
+            {Math.round((incorrectlyCount / userAnswers.length) * 100)}%
+          </span>
           <span className="text">answered incorrectly</span>
         </p>
       </div>
       <ol>
         {userAnswers.map((answer, index) => {
+          let cssClass = "user-answer";
+          if (answer === null) {
+            cssClass += " skipped";
+          } else if (answer === QUESTIONS[index].answers[0]) {
+            cssClass += " correct";
+          } else {
+            cssClass += " wrong";
+          }
           return (
-            <li>
+            <li key={QUESTIONS[index].text + (answer ?? "skipped")}>
               <h3>{QUESTIONS[index].id}</h3>
               <p className="question">{QUESTIONS[index].text}</p>
-              <p className="user-answer">{answer}</p>
+              <p className={cssClass}>{answer ?? "Skipped"}</p>
             </li>
           );
         })}
