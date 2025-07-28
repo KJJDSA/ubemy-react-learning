@@ -47,6 +47,11 @@ const Quiz = () => {
       <div id="questions">
         <QuestionTimer
           timeoutSecond={10}
+          /* 
+          - onTimeout이 변경 될 떄 마다 useEffect가 재실행된다면, 문제를 선택할 때를 제외하고 Quiz 컴포넌트가 절대 재실행되면 안되는 문제가 생긴다. 
+          - Quiz 컴포넌트는 문제를 선택할 때 말고도 추가적인 기능에 따라 얼마든지 재생성될 수 있는데, 그럴때마다 타이머가 재생성될테니 문제가 될 것이다.   
+          - ⛔️ onTimeout 함수 에는 useCallback 을 걸고 타이머가 onTimeout 이 아닌 다른 변경사항을 기준으로 삼을 수 있도록 수정해야 한다! 
+          */
           onTimeout={handleSelectAnswer}
         ></QuestionTimer>
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
