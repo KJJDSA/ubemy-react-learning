@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import QUESTIONS from "../questions.js";
-import QuizOverImage from "../assets/quiz-complete.png";
+
 import Questions from "./Questions.jsx";
-import { useCallback } from "react";
+import Summery from "./Summery.jsx";
 
 const Quiz = () => {
   const [userAnswers, setUserAnswers] = useState([]);
@@ -26,15 +26,11 @@ const Quiz = () => {
   // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
   const answerIsOver = userAnswers.length === QUESTIONS.length;
   if (answerIsOver) {
-    return (
-      <div id="summary">
-        <img src={QuizOverImage} alt="Quiz Over Trophy" />
-        <h2>Quiz Over!</h2>
-      </div>
-    );
+    return <Summery userAnswers={userAnswers} />;
   }
 
   const activeQuestionIndex = userAnswers.length;
+  console.log(activeQuestionIndex);
 
   // userAnswers는 퀴즈를 끝내기 위해 Quiz 컴포넌트에 필요하므로 Quiz에 둔다.
   function handleSelectAnswer(answer) {

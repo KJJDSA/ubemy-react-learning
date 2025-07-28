@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 const QuestionTimer = ({ timeoutSecond, onTimeout, mode }) => {
   const timeout = timeoutSecond * 1000;
   const [remainingTime, setRemainingTime] = useState(timeout);
+  const onTimeoutFuncion = mode === "" ? onTimeout : () => {};
 
   /* (피드백 3-2) interval 은 의존성이 필요하지 않으므로, 예측가능성과 사이드이펙트 방지를 위해 의존성 없는 useEffect로 감싼다. */
   useEffect(() => {
@@ -19,7 +20,7 @@ const QuestionTimer = ({ timeoutSecond, onTimeout, mode }) => {
   useEffect(
     () => {
       const timeoutTimer = setTimeout(
-        onTimeout /* (피드백 3-3) 재사용성을 위해 파라미터를 타이머 컴포넌트에 넣지 않도록 한다 */,
+        onTimeoutFuncion /* (피드백 3-3) 재사용성을 위해 파라미터를 타이머 컴포넌트에 넣지 않도록 한다 */,
         timeout
       );
 

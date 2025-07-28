@@ -28,7 +28,7 @@ const Questions = ({ index, onSelectAnswer }) => {
       selectedAnswer: answer,
     }));
 
-    if (answer === null && timer === 10) {
+    if (answer === null) {
       /* 아무것도 선택하지 않았을 경우 바로 초기화 */
       onSelectAnswer(answer);
     } else {
@@ -51,7 +51,10 @@ const Questions = ({ index, onSelectAnswer }) => {
   결과적으로 useEffect가 Quiz의 재생성마다 재실행되는 문제가 그대로 발생한다.  
   때문에 명시적으로 이를 추가할 수 있도록 handleSelectNothing 를 따로 정의하여 넣는 번거로움이 필요한 것이다.
   */
-  const handleSelectNothing = useCallback(() => handleSelectAnswer(null), [handleSelectAnswer]);
+  const handleSelectNothing = useCallback(
+    () => handleSelectAnswer(null),
+    [handleSelectAnswer]
+  );
 
   return (
     <div id="question">
