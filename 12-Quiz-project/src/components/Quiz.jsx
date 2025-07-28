@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import QUESTIONS from "../questions.js";
 import QuizOverImage from "../assets/quiz-complete.png";
 import QuestionTimer from "./QuestionTimer.jsx";
+import Answers from "./Answers.jsx";
 import { useCallback } from "react";
 
 const Quiz = () => {
+  const suffledAnswers = useRef([]);
   const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
@@ -37,8 +39,12 @@ const Quiz = () => {
   // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
   const activeQuestionIndex =
     answerState === "" ? userAnswers.length : userAnswers.length - 1;
-  const suffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
-  suffledAnswers.sort(() => Math.random() - 0.5);
+
+  /* answers 를 섞지 말아야 할 타이밍에는 섞지 못하도록 한다. */
+  if (userAnswers.length === activeQuestionIndex) {
+    suffledAnswers.current = [...QUESTIONS[activeQuestionIndex].answers];
+    suffledAnswers.current.sort(() => Math.random() - 0.5);
+  }
 
   /* (4-1)한번에 업데이트되지 않고 두번에 걸쳐 업데이트되도록 바꾼다 */
   const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
@@ -84,37 +90,12 @@ const Quiz = () => {
           onTimeout={handleSelectNothing}
         ></QuestionTimer>
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-        <div id="answers">
-          {suffledAnswers.map((answer) => {
-            /* (4-2) 선택된 답변의 색깔을 변경하기 */
-            let cssClassName = "";
-            if (answer === userAnswers[activeQuestionIndex]) {
-              switch (answerState) {
-                case "selected":
-                  cssClassName = "selected";
-                  break;
-                case "correct":
-                  cssClassName = "correct";
-                  break;
-                case "wrong":
-                  cssClassName = "wrong";
-                  break;
-                default:
-                  break;
-              }
-            }
-            return (
-              <li key={answer} className="answer">
-                <button
-                  onClick={() => handleSelectAnswer(answer)}
-                  className={cssClassName}
-                >
-                  {answer}
-                </button>
-              </li>
-            );
-          })}
-        </div>
+        <Answers
+          suffledAnswers={suffledAnswers.current}
+          selectedAnswer={userAnswers[activeQuestionIndex]}
+          onSelectAnswer={handleSelectAnswer}
+          answerState={answerState}
+        ></Answers>
       </div>
     </div>
   );
