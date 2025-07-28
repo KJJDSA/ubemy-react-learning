@@ -5,11 +5,10 @@ import Questions from "./Questions.jsx";
 import { useCallback } from "react";
 
 const Quiz = () => {
-  const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
   /* ⭐️ 기존의 state로 값을 파생시키기 
-  이전에 activeQuesttionIndex 는 userAnswers 의 길이로 설정하더라도 정확히 작동합니다. 
+  userAnswers 의 길이로 activeQuesttionIndex 값을 파생시킬 수 있습니다.
   
   💁 내 방식과 비교했을 때 
 
@@ -23,8 +22,9 @@ const Quiz = () => {
     - state를 최소한으로 유지하면서 서버원본과 같은 데이터를 사용해 일관성을 보장하고, 각각의 데이터가 가지는 역할에 맞게 분리해서 사용할 수 있다. 
     - 질문이 입력될 때 answer 1차원 배열에 추가만 되므로 낮은 성능부하를 가진다. 
   */
-  const answerIsOver = userAnswers.length === QUESTIONS.length;
 
+  // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
+  const answerIsOver = userAnswers.length === QUESTIONS.length;
   if (answerIsOver) {
     return (
       <div id="summary">
@@ -34,46 +34,20 @@ const Quiz = () => {
     );
   }
 
-  // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
-  const activeQuestionIndex =
-    answerState === "" ? userAnswers.length : userAnswers.length - 1;
+  const activeQuestionIndex = userAnswers.length;
 
-  /* (4-1)한번에 업데이트되지 않고 두번에 걸쳐 업데이트되도록 바꾼다 */
-  const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
-    setAnswerState("answered");
+  // userAnswers는 퀴즈를 끝내기 위해 Quiz 컴포넌트에 필요하므로 Quiz에 둔다.
+  function handleSelectAnswer(answer) {
     setUserAnswers((prev) => [...prev, answer]);
-
-    setTimeout(() => {
-      if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
-        setAnswerState("correct");
-      } else {
-        setAnswerState("wrong");
-      }
-      setTimeout(() => {
-        setAnswerState("");
-      }, 1000);
-    }, 1000);
-  }, []);
-
-  /* (피드백 3-5) ⭐️⭐️⭐️ 강의에서 handleSelectNothing 을 만드는 이유 -> useCallback으로 감싼 함수를 써야 하니까. 
-  props 에서 함수를 넣을 때 파라미터를 넣을 필요가 있다면 () => {someFunction(foo)} 같이 화살표함수를 넣고는 하는데, 
-  이는 jsx에서 초기화 될 때 마다 props에 전달할 함수를 새로 만드는 것과 같다. 
-  즉, handleSelectAnswer 를 아무리 useCallback으로 감싸더라도 jsx에서 매번 새로운 함수를 새로운 메모리에 저장해 props로 넘기기 때문에,
-  결과적으로 useEffect가 Quiz의 재생성마다 재실행되는 문제가 그대로 발생한다.  
-  때문에 명시적으로 이를 추가할 수 있도록 handleSelectNothing 를 따로 정의하여 넣는 번거로움이 필요한 것이다.
-  */
-  const handleSelectNothing = useCallback(() => handleSelectAnswer(null));
+  }
 
   return (
     <div id="quiz">
       <Questions
-        /* 아래 컴포넌트들이 key를 사용한 초기화를 필요로 하므로 Questions 한개 컴포넌트로 뭉친다. */
+        /* 다음문제로 넘어갈 때 마다 key를 사용해 초기화한다. */
         key={QUESTIONS[activeQuestionIndex].text}
-        question={QUESTIONS[activeQuestionIndex]}
-        onSelectNothing={handleSelectNothing}
+        index={activeQuestionIndex}
         onSelectAnswer={handleSelectAnswer}
-        selectedAnswer={userAnswers[activeQuestionIndex]}
-        answerState={answerState}
       />
     </div>
   );

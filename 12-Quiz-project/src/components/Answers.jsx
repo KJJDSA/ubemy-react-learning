@@ -15,18 +15,10 @@ const Answers = ({ answers, selectedAnswer, answerState, onSelectAnswer }) => {
         /* (4-2) 선택된 답변의 색깔을 변경하기 */
         let cssClassName = "";
         if (answer === selectedAnswer) {
-          switch (answerState) {
-            case "selected":
-              cssClassName = "selected";
-              break;
-            case "correct":
-              cssClassName = "correct";
-              break;
-            case "wrong":
-              cssClassName = "wrong";
-              break;
-            default:
-              break;
+          if (answerState === null) {
+            cssClassName = "selected";
+          } else {
+            cssClassName = answerState ? "correct" : "wrong";
           }
         }
         return (
