@@ -26,6 +26,8 @@ const Answers = ({ answers, selectedAnswer, answerState, onSelectAnswer }) => {
             <button
               onClick={() => onSelectAnswer(answer)}
               className={cssClassName}
+              /* 답변을 선택했을 경우 disabled 속성 추가 */
+              disabled={selectedAnswer !== ""}
             >
               {answer}
             </button>

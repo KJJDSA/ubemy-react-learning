@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import QUESTIONS from "../questions.js";
 
 const Questions = ({ index, onSelectAnswer }) => {
-
   /* 
   ⭐️ selectedAnswer 이나 answerState 등은 굳이 Quiz에 있을 필요가 없다. 
   1. Questions으로 두 state를 내릴 경우 처음 클릭했을 때 오답여부를 강조하는 기능 자체를 아래 컴포넌트에서 처리하게 할 수 있다
@@ -23,15 +22,20 @@ const Questions = ({ index, onSelectAnswer }) => {
       selectedAnswer: answer,
     }));
 
-    setTimeout(() => {
-      setAnswer((prev) => ({
-        ...prev,
-        isCorrect: answer === QUESTIONS[index].answers[0],
-      }));
+    if (answer === null) {
+      /* 아무것도 선택하지 않았을 경우 바로 초기화 */
+      onSelectAnswer(answer);
+    } else {
       setTimeout(() => {
-        onSelectAnswer(answer);
+        setAnswer((prev) => ({
+          ...prev,
+          isCorrect: answer === QUESTIONS[index].answers[0],
+        }));
+        setTimeout(() => {
+          onSelectAnswer(answer);
+        }, 1000);
       }, 1000);
-    }, 1000);
+    }
   }, []);
 
   /* (피드백 3-5) ⭐️⭐️⭐️ 강의에서 handleSelectNothing 을 만드는 이유 -> useCallback으로 감싼 함수를 써야 하니까. 
