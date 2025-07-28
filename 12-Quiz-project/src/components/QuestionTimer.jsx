@@ -4,24 +4,29 @@ const QuestionTimer = ({ timeoutSecond, onTimeout }) => {
   const timeout = timeoutSecond * 1000;
   const [remainingTime, setRemainingTime] = useState(timeout);
 
-  /* onTimeout에 useEffect가 반응할 때 마다 setInterval 도 초기화되도록 한다. */
-  /* interval 주기마다 새로운 timeout 과 interval 이 생성되는 것을 막기 위해, useEffect으로 감싸준다. */
+  /* (피드백 3-2) interval 은 의존성이 필요하지 않으므로, 예측가능성과 사이드이펙트 방지를 위해 의존성 없는 useEffect로 감싼다. */
+  useEffect(() => {
+    console.log("setting setInterval");
+    const intervalTimer = setInterval(() => {
+      setRemainingTime((prev) => [prev - 100]);
+    }, 100);
+
+    return () => {
+      clearInterval(intervalTimer);
+    };
+  }, []);
+
+  /* interval 주기마다 새로운 timeout 이 생성되는 것을 막기 위해, useEffect으로 감싸준다. */
   useEffect(
     () => {
       console.log("setting setTimeout");
-      const timeoutTimer = setTimeout(() => {
-        onTimeout(null);
-      }, timeout);
-
-      console.log("setting setInterval");
-      const intervalTimer = setInterval(() => {
-        setRemainingTime((prev) => [prev - 100]);
-      }, 100);
+      const timeoutTimer = setTimeout(
+        onTimeout /* (피드백 3-3) 재사용성을 위해 파라미터를 타이머 컴포넌트에 넣지 않도록 한다 */,
+        timeout
+      );
 
       return () => {
         clearTimeout(timeoutTimer);
-        clearInterval(intervalTimer);
-        setRemainingTime(timeout);
       };
     },
     [
