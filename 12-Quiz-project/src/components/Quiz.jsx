@@ -5,6 +5,7 @@ import QuestionTimer from "./QuestionTimer.jsx";
 import { useCallback } from "react";
 
 const Quiz = () => {
+  const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
   /* ⭐️ 기존의 state로 값을 파생시키기 
@@ -34,12 +35,26 @@ const Quiz = () => {
   }
 
   // 재렌더링후 activeQuestionIndex는 마지막 문제가 끝난 후 다음 index 를 가진 문제를 찾지만 없으므로 그 전에 게임을 끝내야 한다.
-  const activeQuestionIndex = userAnswers.length;
+  const activeQuestionIndex =
+    answerState === "" ? userAnswers.length : userAnswers.length - 1;
   const suffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
   suffledAnswers.sort(() => Math.random() - 0.5);
 
+  /* (4-1)한번에 업데이트되지 않고 두번에 걸쳐 업데이트되도록 바꾼다 */
   const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
+    setAnswerState("answered");
     setUserAnswers((prev) => [...prev, answer]);
+
+    setTimeout(() => {
+      if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
+        setAnswerState("correct");
+      } else {
+        setAnswerState("wrong");
+      }
+      setTimeout(() => {
+        setAnswerState("");
+      }, 1000);
+    }, 1000);
   }, []);
 
   /* (피드백 3-5) ⭐️⭐️⭐️ 강의에서 handleSelectNothing 을 만드는 이유 -> useCallback으로 감싼 함수를 써야 하니까. 
@@ -51,7 +66,6 @@ const Quiz = () => {
   */
   const handleSelectNothing = useCallback(() => handleSelectAnswer(null));
 
-  console.log(userAnswers);
   return (
     <div id="quiz">
       <div id="questions">
@@ -72,9 +86,29 @@ const Quiz = () => {
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <div id="answers">
           {suffledAnswers.map((answer) => {
+            /* (4-2) 선택된 답변의 색깔을 변경하기 */
+            let cssClassName = "";
+            if (answer === userAnswers[activeQuestionIndex]) {
+              switch (answerState) {
+                case "selected":
+                  cssClassName = "selected";
+                  break;
+                case "correct":
+                  cssClassName = "correct";
+                  break;
+                case "wrong":
+                  cssClassName = "wrong";
+                  break;
+                default:
+                  break;
+              }
+            }
             return (
               <li key={answer} className="answer">
-                <button onClick={() => handleSelectAnswer(answer)}>
+                <button
+                  onClick={() => handleSelectAnswer(answer)}
+                  className={cssClassName}
+                >
                   {answer}
                 </button>
               </li>
